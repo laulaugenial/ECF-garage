@@ -4,9 +4,62 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+    <title>Garage V. Parrot</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg">
+    <link rel="stylesheet" href="CSS/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  </head>
+
 <body>
-    
+<section class="header">
+  <nav>
+    <a href="index.html"><img src="assets/logo.png"></a>
+    <div class="nav-links" id="navLinks">
+      <i class="fa fa-times" onclick="hideMenu()"></i>
+      <ul>
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="vehicules.html">Véhicules d'occasion</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <i class="fa fa-bars" onclick="showMenu()"></i>
+  </nav>
+
+<div class="text-box">
+  <h1>Bienvenue dans votre Garage V. Parrot</h1>
+  <p>Forts de 15 années d'expérience, nous vous garantissons un service sur mesure.<br>Rassurez-vous, votre véhicule est entre de bonnes mains </p>
+  <a href="" class="hero-btn">Contactez-nous !</a>
+</div>
+</section>
+
+
+
+<!---FOOTER-->
+
+<section class="footer">
+    <h4>Horaires d'ouverture</h4>
+        <h5>Du lundi au vendredi</h5>
+        <p>08:45 - 12:00<br>
+        14:00 - 18:00</p>
+       <h5>Samedi</h5>
+        <p>08:45 - 12:00</p>
+        <h5>Dimanche</h5>
+        <p>Fermé</p>
+</section>
+
+<!--Javascript for Toggle Menu-->
+<script>
+  var navLinks = document.getElementById("navLinks");
+
+  function showMenu() {
+    navLinks.style.right = "0";
+  }
+  function hideMenu(){
+    navLinks.style.right = "-200px";
+  }
+
+
+</script>
+
 </body>
 </html>
