@@ -4,9 +4,109 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+    <title>Garage V. Parrot</title>
+    <link rel="icon" href="assets/img/favicon.png" type="image/png">
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  </head>
+
 <body>
-    
+<section class="header">
+  <nav>
+    <a href="index.html"><img src="assets/img/logo.png"></a>
+    <div class="nav-links" id="navLinks">
+      <i class="fa fa-times" onclick="hideMenu()"></i>
+      <ul>
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="vehicules.html">Véhicules d'occasion</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <i class="fa fa-bars" onclick="showMenu()"></i>
+  </nav>
+
+<div class="text-box">
+  <h1>Bienvenue dans votre garage de qualité</h1>
+  <p>Parce que votre voiture compte autant pour vous que pour nous, <br>nous nous engageons à prendre soin de votre bijou</p>
+  <a href="" class="hero-btn">Viens nous voir petit visiteur</a>
+</div>
+</section>
+
+<!--PRESTATIONS-->
+<section class="repair">
+  <h1>Prestations</h1>
+  <div class="row">
+    <div class="repair-col">
+      <img src="assets/img/repair.png">
+        <h3>Réparations</h3>
+        <p>Changement de pneus, joint de culasse problématique, on s'occupe de tout</p>
+    </div>
+    <div class="repair-col">
+      <img src="assets/img/control.png">
+        <h3>Contrôle technique</h3>
+        <p>Passez votre contrôle technique rapidement</p>
+    </div>
+    <div class="repair-col">
+      <img src="assets/img/clean.png">
+        <h3>Entretien</h3>
+        <p>Nettoyage, vente de produits agréés... <br>Trouvez votre bonheur chez nous !</p>
+    </div>
+  </div>
+</section>
+
+<!---COMMENTS-->
+
+<section class="comments">
+  <h1>Ce que nos clients disent de nous</h1>
+  <div class="row">
+    <div class="comments-col">
+      <div>
+        <h3>Titre du commentaire 1</h3>
+        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ut asperiores quisquam 
+          distinctio voluptatibus sint obcaecati quidem pariatur atque totam? Sequi impedit 
+          nesciunt fuga illum, perspiciatis ullam quisquam iusto quia tempora?</p>
+          <i class="fa fa-star"></i>
+          <i class="fa fa-star"></i>
+          <i class="fa fa-star"></i>
+          <i class="fa fa-star"></i>
+          <i class="fa fa-star-o"></i>
+      </div>
+    </div>
+    <div class="comments-col">
+      <div>
+        <h3>Titre du commentaire 2</h3>
+        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ut asperiores quisquam 
+          distinctio voluptatibus sint obcaecati quidem pariatur atque totam? Sequi impedit 
+          nesciunt fuga illum, perspiciatis ullam quisquam iusto quia tempora?</p>
+          <i class="fa fa-star"></i>
+          <i class="fa fa-star"></i>
+          <i class="fa fa-star"></i>
+          <i class="fa fa-star"></i>
+          <i class="fa fa-star-o"></i>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!---FOOTER-->
+
+<section class="footer">
+  
+</section>
+
+<!--Javascript for Toggle Menu-->
+<script>
+  var navLinks = document.getElementById("navLinks");
+
+  function showMenu() {
+    navLinks.style.right = "0";
+  }
+  function hideMenu(){
+    navLinks.style.right = "-200px";
+  }
+
+
+</script>
+
 </body>
 </html>
