@@ -11,13 +11,15 @@
   </head>
 
 <body>
-<section class="header">
+<section class="header-index">
   <nav>
     <a href="index.html"><img src="assets/logo.png"></a>
     <div class="nav-links" id="navLinks">
       <i class="fa fa-times" onclick="hideMenu()"></i>
       <ul>
         <li><a href="index.html">Accueil</a></li>
+        <li><a href="repair.html">Réparations</a></li>
+        <li><a href="clean.html">Entretien</a></li>
         <li><a href="vehicules.html">Véhicules d'occasion</a></li>
         <li><a href="contact.html">Contact</a></li>
       </ul>
@@ -28,7 +30,7 @@
 <div class="text-box">
   <h1>Bienvenue dans votre Garage V. Parrot</h1>
   <p>Forts de 15 années d'expérience, nous vous garantissons un service sur mesure.<br>Rassurez-vous, votre véhicule est entre de bonnes mains </p>
-  <a href="" class="hero-btn">Contactez-nous !</a>
+  <a href="contact.html" class="hero-btn">Contactez-nous !</a>
 </div>
 </section>
 
@@ -38,13 +40,13 @@
   <div class="row">
     <div class="repair-col">
       <img src="assets/repair.png">
-        <h3>Réparations</h3>
-        <p>Changement de pneus, joint de culasse problématique, on s'occupe de tout</p>
+        <h3>Carrosserie</h3>
+        <p>Changement d'éléments, camouflage d'égratinures</p>
     </div>
     <div class="repair-col">
       <img src="assets/control.png">
-        <h3>Contrôle technique</h3>
-        <p>Passez votre contrôle technique rapidement</p>
+        <h3>Mécanique</h3>
+        <p>Remplacement de pièces défectueuses</p>
     </div>
     <div class="repair-col">
       <img src="assets/clean.png">
@@ -52,6 +54,12 @@
         <p>Nettoyage, vente de produits agréés... <br>Trouvez votre bonheur chez nous !</p>
     </div>
   </div>
+</section>
+
+<!--- VEHICULES -->
+<section class="banner-vehicules">
+  <h2>Découvrez tous nos véhicules d'occasion</h2>
+  <a href="vehicules.html" class="btn-vehicules">Véhicules d'occasion</a>
 </section>
 
 <!---COMMENTS-->
@@ -91,6 +99,19 @@
 <!---FOOTER-->
 
 <section class="footer">
+  <div>
+    <h4>Nous trouver</h4>
+    <p>15 rue des marronniers<br>31000 Toulouse</p>
+    <h4>Téléphone</h4>
+    <p>01 02 03 04 05</p>
+  </div>
+  <div class="nav-footer">
+    <a href="repair.html"><h4>Réparations</h4></a>
+    <a href="clean.html"><h4>Entretien</h4></a>
+    <a href="vehicules.html"><h4>Véhicules d'occasion</h4></a>
+    <a href="contact.html"><h4>Contact</h4></a>
+  </div>
+  <div>
     <h4>Horaires d'ouverture</h4>
         <h5>Du lundi au vendredi</h5>
         <p>08:45 - 12:00<br>
@@ -99,6 +120,7 @@
         <p>08:45 - 12:00</p>
         <h5>Dimanche</h5>
         <p>Fermé</p>
+  </div>
 </section>
 
 <!--Javascript for Toggle Menu-->
