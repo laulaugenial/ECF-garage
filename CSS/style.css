@@ -276,6 +276,53 @@ nav .fa {
     }
 }
 
+/*------- COMMENT BOX -----------*/
+
+.comment-content {
+    width: 80%;
+    margin: auto;
+    padding: 60px 0;
+    flex-basis: 65%;
+}
+.comment-box {
+    border: 1px solid #2e2e2e;
+    margin: 50px 0;
+    padding: 10px 20px;
+}
+.comment-box h3 {
+    text-align: left;
+}
+.comment-form input, .comment-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 15px 0;
+    box-sizing: border-box;
+    border: none;
+    outline: none;
+    background: #f0f0f0;
+}
+
+/*----- CARROSSERIE ----*/
+.carrosserie {
+    width: 80%;
+    margin: auto;
+    padding-top: 80px;
+    padding-bottom: 50px;
+}
+.carrosserie-col {
+    flex-basis: 48%;
+    padding: 30px 2px;
+}
+.carrosserie-col img {
+    width: 100%;
+}
+.carrosserie-col h1 {
+    padding-top: 0;
+}
+.carrosserie-col p {
+    padding: 15px 0 25px;
+}
+
 /*----- FOOTER ----*/
 .footer {
     width: 100%;
