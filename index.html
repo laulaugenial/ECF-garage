@@ -69,46 +69,55 @@
   <div class="row">
     <div class="comments-col">
       <div>
-        <h3>Titre du commentaire 1</h3>
+        <i class="fa fa-star"></i>
+        <i class="fa fa-star"></i>
+        <i class="fa fa-star"></i>
+        <i class="fa fa-star"></i>
+        <i class="fa fa-star-half"></i>
         <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ut asperiores quisquam 
           distinctio voluptatibus sint obcaecati quidem pariatur atque totam? Sequi impedit 
           nesciunt fuga illum, perspiciatis ullam quisquam iusto quia tempora?</p>
-          <i class="fa fa-star"></i>
-          <i class="fa fa-star"></i>
-          <i class="fa fa-star"></i>
-          <i class="fa fa-star"></i>
-          <i class="fa fa-star-half"></i>
+        <h4>Nom 1</h4>
       </div>
     </div>
     <div class="comments-col">
       <div>
-        <h3>Titre du commentaire 2</h3>
+        <i class="fa fa-star"></i>
+        <i class="fa fa-star"></i>
+        <i class="fa fa-star"></i>
+        <i class="fa fa-star"></i>
+        <i class="fa fa-star-half"></i>
         <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ut asperiores quisquam 
           distinctio voluptatibus sint obcaecati quidem pariatur atque totam? Sequi impedit 
           nesciunt fuga illum, perspiciatis ullam quisquam iusto quia tempora?</p>
-          <i class="fa fa-star"></i>
-          <i class="fa fa-star"></i>
-          <i class="fa fa-star"></i>
-          <i class="fa fa-star"></i>
-          <i class="fa fa-star-half"></i>
+        <h4>Nom 2</h4>
       </div>
     </div>
   </div>
-</section>
-
-<!--- AVIS --->
-
-<section class="comment-content">
-  <div class="comment-box">
-    <h3> Laissez un avis</h3>
-    <form class="comment-form">
-      <input type="text" placeholder="Entrez votre nom">
-      <input type="email" placeholder="Entrez votre email">
-      <textarea rows="5" placeholder="Votre avis">
-      </textarea>
-      <button type="submit" class="hero-btn red-btn">Envoyer l'avis</button>
-    </form>
-</div>
+  <div>
+    <!-- Trigger/Open The Modal -->
+      <button id="myBtn" class="comment-btn">Laisser un avis</button>
+    
+      <!-- The Modal -->
+      <div id="myModal" class="modal">
+    
+        <!-- Modal content -->
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <section class="comment-content">
+            <div class="comment-box">
+              <h3> Laissez un avis</h3>
+              <form class="comment-form">
+                <input type="text" placeholder="Entrez votre nom">
+                <input type="email" placeholder="Entrez votre email">
+                <textarea rows="5" placeholder="Votre commentaire"></textarea>
+                <button type="submit" class="hero-btn red-btn">Envoyer l'avis</button>
+              </form>
+          </div>
+          </section>
+        </div>
+      </div>
+    </div>
 </section>
 
 <!---FOOTER-->
@@ -125,6 +134,7 @@
     <a href="clean.html"><h4>Entretien</h4></a>
     <a href="vehicules.html"><h4>Véhicules d'occasion</h4></a>
     <a href="contact.html"><h4>Contact</h4></a>
+    <a href="#"><h4>Espace pro</h4></a>
   </div>
   <div>
     <h4>Horaires d'ouverture</h4>
@@ -137,20 +147,6 @@
         <p>Fermé</p>
   </div>
 </section>
-
-<!--Javascript for Toggle Menu-->
-<script>
-  var navLinks = document.getElementById("navLinks");
-
-  function showMenu() {
-    navLinks.style.right = "0";
-  }
-  function hideMenu(){
-    navLinks.style.right = "-200px";
-  }
-
-
-</script>
-
+<script src="JS/main.js"></script>
 </body>
 </html>
