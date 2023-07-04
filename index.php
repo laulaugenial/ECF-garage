@@ -1,31 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Garage V. Parrot</title>
-    <link rel="icon" href="assets/favicon.svg" type="image/svg">
-    <link rel="stylesheet" href="CSS/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  </head>
 
-<body>
 <section class="header-index">
-  <nav>
-    <a href="index.html"><img src="assets/logo.png"></a>
-    <div class="nav-links" id="navLinks">
-      <i class="fa fa-times" onclick="hideMenu()"></i>
-      <ul>
-        <li><a href="index.html">Accueil</a></li>
-        <li><a href="repair.html">Réparations</a></li>
-        <li><a href="clean.html">Entretien</a></li>
-        <li><a href="vehicules.html">Véhicules d'occasion</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-    </div>
-    <i class="fa fa-bars" onclick="showMenu()"></i>
-  </nav>
+  <?php 
+    require_once __DIR__.'/templates/header.php'; 
+  ?> 
 
 <div class="text-box">
   <h1>Bienvenue dans votre Garage V. Parrot</h1>
@@ -33,6 +10,7 @@
   <a href="contact.html" class="hero-btn">Contactez-nous !</a>
 </div>
 </section>
+
 
 <!--PRESTATIONS-->
 <section class="repair">
@@ -56,11 +34,13 @@
   </div>
 </section>
 
+
 <!--- VEHICULES -->
 <section class="banner-vehicules">
   <h2>Découvrez tous nos véhicules d'occasion</h2>
-  <a href="vehicules.html" class="btn-vehicules">Véhicules d'occasion</a>
+  <a href="vehicules.php" class="btn-vehicules">Véhicules d'occasion</a>
 </section>
+
 
 <!---COMMENTS-->
 
@@ -106,10 +86,11 @@
           <span class="close">&times;</span>
           <section class="comment-content">
             <div class="comment-box">
-              <h3> Laissez un avis</h3>
+              <h3> Donnez votre avis</h3>
               <form class="comment-form">
                 <input type="text" placeholder="Entrez votre nom">
                 <input type="email" placeholder="Entrez votre email">
+                <input type="text" placeholder="Notez votre commentaire de 1 à 5">
                 <textarea rows="5" placeholder="Votre commentaire"></textarea>
                 <button type="submit" class="hero-btn red-btn">Envoyer l'avis</button>
               </form>
@@ -122,31 +103,19 @@
 
 <!---FOOTER-->
 
-<section class="footer">
-  <div>
-    <h4>Nous trouver</h4>
-    <p>15 rue des marronniers<br>31500 Toulouse</p>
-    <h4>Téléphone</h4>
-    <p>01 02 03 04 05</p>
-  </div>
-  <div class="nav-footer">
-    <a href="repair.html"><h4>Réparations</h4></a>
-    <a href="clean.html"><h4>Entretien</h4></a>
-    <a href="vehicules.html"><h4>Véhicules d'occasion</h4></a>
-    <a href="contact.html"><h4>Contact</h4></a>
-    <a href="#"><h4>Espace pro</h4></a>
-  </div>
-  <div>
-    <h4>Horaires d'ouverture</h4>
-        <h5>Du lundi au vendredi</h5>
-        <p>08:45 - 12:00<br>
-        14:00 - 18:00</p>
-       <h5>Samedi</h5>
-        <p>08:45 - 12:00</p>
-        <h5>Dimanche</h5>
-        <p>Fermé</p>
-  </div>
-</section>
-<script src="JS/main.js"></script>
-</body>
-</html>
+<?php 
+    require_once __DIR__.'/templates/footer.php'; 
+?> 
+
+
+
+<?php
+try
+{
+	$db = new PDO('pgsql:host=localhost;port=5432;dbname=ECF;charset=utf8', 'root', 'root');
+}
+catch (Exception $e)
+{
+        die('Erreur : ' . $e->getMessage());
+}
+?>
