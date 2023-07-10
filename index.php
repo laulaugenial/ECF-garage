@@ -3,30 +3,42 @@
   <?php 
     require_once __DIR__.'/templates/header.php'; 
   ?> 
+<?php
+        if(isset($SESSION['message']))
+        {
+            ?>
+            <div class="alert">
+                <strong>Hey!</strong> <?= $_SESSION['message']; ?>
+                <button type="button" aria-label="close"></button>
+            </div>
+            <?php
+            unset($_SESSION['message']);
+        }
+        ?>
 
 <div class="text-box">
   <h1>Bienvenue dans votre Garage V. Parrot</h1>
   <p>Implantés dans la ville de Toulouse depuis plus de 15ans, nous vous garantissons un service rapide et sur mesure.<br>Confiez votre véhicule à de vrais passionés en toute confiance. </p>
-  <a href="contact.html" class="hero-btn">Contactez-nous !</a>
+  <a href="contact.php" class="hero-btn">Contactez-nous !</a>
 </div>
 </section>
 
 
 <!--PRESTATIONS-->
-<section class="repair">
+<section class="articles">
   <h1>Prestations</h1>
   <div class="row">
-    <div class="repair-col">
+    <div class="article-col">
       <img src="assets/repair.png" alt="Reparation carrosserie">
         <h3>Carrosserie</h3>
         <p>Changement d'éléments, camouflage d'égratinures</p>
     </div>
-    <div class="repair-col">
+    <div class="article-col">
       <img src="assets/control.png" alt="Reparation mécanique">
         <h3>Mécanique</h3>
         <p>Remplacement de pièces défectueuses</p>
     </div>
-    <div class="repair-col">
+    <div class="article-col">
       <img src="assets/clean.png" alt="Entretien voiture">
         <h3>Entretien</h3>
         <p>Nettoyage, vente de produits agréés... <br>Trouvez votre bonheur chez nous !</p>
@@ -87,7 +99,7 @@
           <section class="comment-content">
             <div class="comment-box">
               <h3> Donnez votre avis</h3>
-              <form class="comment-form">
+              <form class="form">
                 <input type="text" placeholder="Entrez votre nom">
                 <input type="email" placeholder="Entrez votre email">
                 <input type="text" placeholder="Notez votre commentaire de 1 à 5">

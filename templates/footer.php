@@ -10,7 +10,7 @@
     <a href="clean.php"><h4>Entretien</h4></a>
     <a href="vehicules.php"><h4>Véhicules d'occasion</h4></a>
     <a href="contact.php"><h4>Contact</h4></a>
-    <a href="login.php"><h4>Espace pro</h4></a>
+    <a href="admin/login.php"><h4>Espace pro</h4></a>
   </div>
   <div>
     <h4>Horaires d'ouverture</h4>
@@ -23,6 +23,9 @@
         <p>Fermé</p>
   </div>
 </section>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"
+  integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
+  crossorigin="anonymous"></script>
 <script src="JS/main.js"></script>
 </body>
 </html>

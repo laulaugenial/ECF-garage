@@ -17,13 +17,23 @@ CREATE TABLE testimony (
 	id SERIAL PRIMARY KEY,
 	name VARCHAR(64) NOT NULL,
 	email VARCHAR(128) NOT NULL,
-	grade NUMERIC(5) NOT NULL,
+	grade INTEGER NOT NULL,
 	message TEXT NOT NULL
 );
-
-SELECT * FROM testimony
+SELECT * FROM testimony;
 
 INSERT INTO testimony
-VALUES (1, 'Jean Charles', 'coucou@gmail.com', 5, 'Jaime beaucoup ce que vous faites');
+VALUES (1, 'Jean Charles', 'coucou@gmail.com', 4, 'Génial je vous adore vous êtes les meilleurs');
 
-SELECT * FROM testimony
+SELECT * FROM testimony;
+
+UPDATE testimony
+SET id = DEFAULT
+WHERE id = 1;
+
+SELECT * FROM testimony;
+
+INSERT INTO testimony
+VALUES (DEFAULT, 'Jean Charles', 'coucou@gmail.com', 4, 'Génial je vous adore vous êtes les meilleurs');
+
+SELECT * FROM testimony;
