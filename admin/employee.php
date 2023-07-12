@@ -26,41 +26,43 @@ include_once('../config/dbcon.php');
       </div>
 </nav>
 
-
-<?php echo 'Bienvenue sur votre espace professionnel' . $name['name'] .$lastname['lastname'] ?>
-
-
+<div class="container">
+    <?php echo 'Bienvenue sur votre espace professionnel' . $name['name'] .$lastname['lastname'] ?>
+</div>
 <section class="modify">
   <div class="row">
     
     <div class="modify-col">
-    <h1> Ajouter un compte Employé</h1>
-      <form class="modify-form" action="../functions/addEmployee.php" method="POST">
-        <input type="text" name="name" placeholder="Prénom" required>
-        <input type="text" name="lastname" placeholder="Nom"required>
-        <input type="email" name="email" placeholder="Email"required>
-        <input type="password" id="pass" name="password" minlength="8" placeholder="Mot de passe"required>
+    <h1> Ajouter une voiture</h1>
+      <form class="modify-form" action="../functions/addCar.php" enctype="multipart/form-data" method="POST">
+        <input type="text" name="carbrand" placeholder="Marque de la voiture" required>
+        <input type="text" name="year" placeholder="Année mise en circulation">
+        <input type="text" name="fuel" placeholder="Type d'essence">
+        <input type="text" name="km" placeholder="Nombre de km">
+        <input type="text" name="price" placeholder="Prix en €"required>
+        <input type="text" name="infos" placeholder="Informations supplémentaires">
         <button type="submit" name="ajouter" class="add-btn red-btn">Ajouter</button>
+      </form>
+
+      <form class="modify-form" action="../functions/addCar.php" enctype="multipart/form-data" method="POST">
+      <input type="file" name="choosefile" value="">
+      <button type="submit" name="uploadfile">Ajouter image</button>
       </form>
     </div>
   
 
     
     <div class="modify-col">
-      <h1>Modifier horaires d'ouverture</h1>
+      <h1>Espace commentaires</h1>
         <form class="modify-form" action="../templates/footer.php" method="POST">
-            <label for="day">Entrer le jour de la semaine :</label>
-            <input type="text" name="day" placeholder="Jour de la semaine" required>
-            <label for="morning">Entrer les horaires de la matinée :</label>
-            <input type="text" name="morning" placeholder="Format 08:00 - 12:00"required>
-            <label for="evening">Entrer les horaires de l'après-midi :</label>
-            <input type="text" name="evening" placeholder="Format 14:00 - 18:00"required>
+            <input type="text" name="name" placeholder="Nom du commentaire" required>
+            <input type="text" name="comment" placeholder="Contenu du commentaire"required>
+            <input type="text" name="grade" placeholder="Nombre d'étoiles"required>
             <button type="submit" name="addHours" class="add-btn red-btn">Ajouter</button>
         </form>
     </div>
   </div>
-
-
 </section>
+
 </body>
 </html>

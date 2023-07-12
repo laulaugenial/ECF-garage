@@ -520,3 +520,70 @@ nav .fa {
     color:#ff8c00;
     border: 1px solid #ff8c00;
 }
+
+
+
+/*----HOME FORMS ----*/
+.modify {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    margin: auto;
+    padding-top: 100px;
+}
+.modify-col h1 {
+    text-transform: uppercase;
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: 2px;
+    margin: 20px 20px;
+}
+.modify-col {
+    border-radius: 10px;
+    margin: 20px 20px;
+    box-sizing: border-box;
+    box-shadow: 0 0 20px 0px rgba(0,0,0,0.2);
+}
+.modify-form label{
+    margin: 10px 10px;
+    text-align: left;
+}
+.modify-form input{
+    width: 100%;
+    padding: 10px;
+    margin: 15px 0;
+    box-sizing: border-box;
+    border: none;
+    outline: none;
+    background: #f0f0f0;
+}
+
+.add-btn {
+    text-decoration: none;
+    background: #ff8c00;
+    color:#fff;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #fff;
+    font-size: 18px;
+    position: relative;
+    cursor: pointer;
+}
+.add-btn:hover{
+    border: 1px solid #ff8c00;
+    background: #fff;
+    transition: 0.5s;
+    color: #ff8c00;
+}
+
+
+@media(max-width: 800px){
+    .modify{
+        flex-direction: column;
+        margin-bottom: 50px;
+    }
+    .modify-col {
+        margin-bottom: 25px;
+    }
+}
