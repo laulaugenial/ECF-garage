@@ -16,13 +16,13 @@ include('../config/dbcon.php'); ?>
 
 <body>
 <nav class="header">
-      <a href="index.php"><img src="../assets/logo.png"></a>
+      <a href="../index.php"><img src="../assets/logo.png"></a>
       <div class="nav-links" id="navLinks">
       </div>
 </nav>
 
 <section class="container">
-<!--- A voir
+
 <?php
         if(isset($_SESSION['message']))
         {
@@ -35,14 +35,14 @@ include('../config/dbcon.php'); ?>
             unset($_SESSION['message']);
         }
         ?>
-    --->
+
 
     <h1>Connectez-vous à votre espace professionnel</h1>
     <div class="container-content">
         <form action="../functions/authcode.php" method="POST">
             <div class="form">
                 <label for=" email">Email :</label>
-                <input type="email" name="email" placeholder="Entrez votre email">
+                <input type="email" name="email" placeholder="Entrez votre email" required>
                 <label for="pass">Mot de passe :</label>
                 <input type="password" placeholder="Saisissez votre mot de passe" id="pass" name="password" minlength="8" required>
                 <button type="submit" name="login-btn" class="login-btn">Se connecter</button>

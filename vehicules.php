@@ -1,14 +1,14 @@
 <section class="header">
   <?php 
-    require_once __DIR__.'/templates/header.php'; 
+    require_once __DIR__.'/templates/header.php';
   ?> 
 
 </section>
 
 
-<section class="articles">
+<section class="sales-articles">
   <h1>Nos véhicules d'occasion à la vente</h1>
-  <div class="row">
+  <div class="row-sales">
     <div class="sales-col">
       <img src="assets/repair.png" alt="Reparation carrosserie">
           <h3>Opel Corsa 1.3 CDCI 75 CH DIESEL</h3>
@@ -90,6 +90,24 @@
             </div>
           </div>
     </div>
+    <?php
+      $db = new PDO('pgsql:host=localhost;dbname=ECF;port=5432;options=\'--client_encoding=UTF8\'', 'laulaugenial', 'root', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, PDO::ATTR_EMULATE_PREPARES   => false]);
+      $req=$db->query("SELECT * FROM car ORDER BY car_id DESC");
+
+      while($aff=$req->fetch()){?>
+
+    <div class="sales-col">
+      <img src="assets/repair.png" alt="Reparation carrosserie">
+        <h3><?php echo $aff['carbrand']?></h3>
+        <p>Année : <?php echo $aff['year']?></p>
+        <p><?php echo $aff['fuel']?></p>
+        <p><?php echo $aff['km']?> km</p>
+        <h4><?php echo $aff['price']?>€</h4>
+        <button id="myBtn" class="comment-btn">Nous contacter</button>
+    </div>
+        <?php } ?>
+
+    
 
 </section>
 

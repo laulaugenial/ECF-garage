@@ -1,21 +1,28 @@
 <?php
 include_once('../config/dbcon.php');
 
-if(isset($_POST['uploadfile'])) {
-    $picture = $_FILES["choosefile"]["name"];
-    $tempname = $_FILES["choosefile"]["tmp_name"];
-    $folder  = "../uploads".$picture;
+if(isset($_POST['ajouter'])) {
+    if(!empty($_POST['carbrand']) AND !empty($_POST['price'])) {
+        $carbrand = $_POST['carbrand'];
+        $year = $_POST['year'];
+        $fuel = $_POST['fuel'];
+        $km = $_POST['km'];
+        $price = $_POST['price'];
+        $infos = $_POST['infos'];
+        $insertInfos = $db->prepare('INSERT INTO car(carbrand, year, fuel, km, price, infos) VALUES (?, ?, ?, ?, ?, ?)');
+        $insertInfos->execute(array($carbrand, $year, $fuel, $km, $price, $infos));
 
+        if($insertInfos) {echo "Voiture enregistrée";};
 
-    $pg = "INSERT INTO car (picture) VALUES('$picture')";
-
-    pg_query($db, $pg);
-
-    if(move_uploaded_file($tempname, $folder)) {
-        $msg= "Image bien importée";
     } else {
-        $msg = "Ca a pas marché je te dis";
+        echo "Veuillez compléter les champs";
     }
 }
-$result = pg_query($db, "SELECT * FROM uploads");
+
+
+header ("location: ../admin/employee.php");
+
+
+
+
 ?>

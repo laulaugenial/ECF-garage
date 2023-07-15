@@ -8,10 +8,26 @@ $user = $stmt->fetch();
 
 if ($user && ($_POST['password'] == $user['password']))
 {
-    echo "valid!";
-    header('Location: ../admin/home.php');
+    if (($user['user_type'] == 'Admin'))
+    {
+        header('Location: ../admin/home.php');
+    }
+    else
+    {
+        if($user['user_type'] == 'Employee')
+        {
+            header('Location: ../admin/employee.php');
+        }
+        else 
+        {
+            header('Location: ../admin/login.php');
+            echo "pb de connexion";
+        }
+    }
+   
 } else {
-    echo "invalid";
+    header('Location: ../admin/login.php');
+    echo "Erreur de connexion";
 }
- 
+
 ?>

@@ -34,19 +34,14 @@ include_once('../config/dbcon.php');
     
     <div class="modify-col">
     <h1> Ajouter une voiture</h1>
-      <form class="modify-form" action="../functions/addCar.php" enctype="multipart/form-data" method="POST">
+      <form class="modify-form" action="../functions/addCar.php" method="POST">
         <input type="text" name="carbrand" placeholder="Marque de la voiture" required>
         <input type="text" name="year" placeholder="Année mise en circulation">
         <input type="text" name="fuel" placeholder="Type d'essence">
         <input type="text" name="km" placeholder="Nombre de km">
-        <input type="text" name="price" placeholder="Prix en €"required>
+        <input type="text" name="price" placeholder="Prix"required>
         <input type="text" name="infos" placeholder="Informations supplémentaires">
         <button type="submit" name="ajouter" class="add-btn red-btn">Ajouter</button>
-      </form>
-
-      <form class="modify-form" action="../functions/addCar.php" enctype="multipart/form-data" method="POST">
-      <input type="file" name="choosefile" value="">
-      <button type="submit" name="uploadfile">Ajouter image</button>
       </form>
     </div>
   
@@ -55,12 +50,45 @@ include_once('../config/dbcon.php');
     <div class="modify-col">
       <h1>Espace commentaires</h1>
         <form class="modify-form" action="../templates/footer.php" method="POST">
-            <input type="text" name="name" placeholder="Nom du commentaire" required>
+            <input type="text" name="name" placeholder="Nom de l'auteur" required>
             <input type="text" name="comment" placeholder="Contenu du commentaire"required>
-            <input type="text" name="grade" placeholder="Nombre d'étoiles"required>
+            <label for="star">Nombre d'étoiles</label>
+            <select name="star" id="stars">
+              <option value="">Sélectionnez</option>
+              <option value="1">1 étoiles</option>
+              <option value="2">2 étoiles</option>
+              <option value="3">3 étoiles</option>
+              <option value="4">4 étoiles</option>
+              <option value="5">5 étoiles</option>
+            </select>
+            <br>
             <button type="submit" name="addHours" class="add-btn red-btn">Ajouter</button>
         </form>
     </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="array">
+    <h1>Formulaires</h1>
+    <br>
+    <table>
+      <tr>
+        <th>ID</th>
+        <th>Nom et prénom</th>
+        <th>Mail</th>
+        <th>Télephone</th>
+        <th>Objet</th>
+        <th class="message">Message</th>
+      </tr>
+      <tr>
+        <td>ergerg</td>
+        <td>ergerg</td>
+        <td>ergerg</td>
+        <td>ergerg</td>
+        <td>ergerg</td>
+        <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error ipsum assumenda, quae rerum temporibus est commodi, sapiente officiis sed asperiores corporis saepe nisi rem sit dolorum ea?</td>
+    </table>
   </div>
 </section>
 

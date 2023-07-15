@@ -2,19 +2,8 @@
 <section class="header-index">
   <?php 
     require_once __DIR__.'/templates/header.php'; 
+    include_once('/config/dbcon.php');
   ?> 
-<?php
-        if(isset($SESSION['message']))
-        {
-            ?>
-            <div class="alert">
-                <strong>Hey!</strong> <?= $_SESSION['message']; ?>
-                <button type="button" aria-label="close"></button>
-            </div>
-            <?php
-            unset($_SESSION['message']);
-        }
-        ?>
 
 <div class="text-box">
   <h1>Bienvenue dans votre Garage V. Parrot</h1>
@@ -87,30 +76,20 @@
     </div>
   </div>
   <div>
-    <!-- Trigger/Open The Modal -->
-      <button id="myBtn" class="comment-btn">Laisser un avis</button>
-    
-      <!-- The Modal -->
-      <div id="myModal" class="modal">
-    
-        <!-- Modal content -->
-        <div class="modal-content">
-          <span class="close">&times;</span>
-          <section class="comment-content">
-            <div class="comment-box">
-              <h3> Donnez votre avis</h3>
-              <form class="form">
-                <input type="text" placeholder="Entrez votre nom">
-                <input type="email" placeholder="Entrez votre email">
-                <input type="text" placeholder="Notez votre commentaire de 1 à 5">
-                <textarea rows="5" placeholder="Votre commentaire"></textarea>
-                <button type="submit" class="hero-btn red-btn">Envoyer l'avis</button>
-              </form>
-          </div>
-          </section>
-        </div>
-      </div>
+    <section class="comment-content">
+      <div class="comment-box">
+        <h3> Donnez votre avis</h3>
+        <form class="form"  action="/functions/avis.php" method="POST">
+          <input type="text" name="nameComment" placeholder="Entrez votre prénom" required>
+          <input type="text" name="lastnameComment" placeholder="Entrez votre nom" required>
+          <input type="email" name="emailComment" placeholder="Entrez votre email" required>
+          <input type="text" name="gradeComment" placeholder="Notez votre commentaire de 1 à 5" required>
+          <textarea rows="5" name="comment"placeholder="Votre commentaire" required></textarea>
+          <button type="submit" name="btnAvis" class="hero-btn red-btn">Envoyer l'avis</button>
+        </form>
     </div>
+    </section>
+  </div>
 </section>
 
 <!---FOOTER-->
@@ -118,16 +97,3 @@
 <?php 
     require_once __DIR__.'/templates/footer.php'; 
 ?> 
-
-
-
-<?php
-try
-{
-	$db = new PDO('pgsql:host=localhost;port=5432;dbname=ECF;charset=utf8', 'root', 'root');
-}
-catch (Exception $e)
-{
-        die('Erreur : ' . $e->getMessage());
-}
-?>

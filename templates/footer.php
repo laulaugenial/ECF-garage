@@ -6,6 +6,7 @@
     <p>01 02 03 04 05</p>
   </div>
   <div class="nav-footer">
+    <a href="index.php"><h4>Accueil</h4></a>
     <a href="repair.php"><h4>Réparations</h4></a>
     <a href="clean.php"><h4>Entretien</h4></a>
     <a href="vehicules.php"><h4>Véhicules d'occasion</h4></a>
@@ -14,13 +15,15 @@
   </div>
   <div>
     <h4>Horaires d'ouverture</h4>
-        <h5>Du lundi au vendredi</h5>
-        <p>08:45 - 12:00<br>
-        14:00 - 18:00</p>
-       <h5>Samedi</h5>
-        <p>08:45 - 12:00</p>
-        <h5>Dimanche</h5>
-        <p>Fermé</p>
+    <?php
+    $db = new PDO('pgsql:host=localhost;dbname=ECF;port=5432;options=\'--client_encoding=UTF8\'', 'laulaugenial', 'root', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, PDO::ATTR_EMULATE_PREPARES   => false]);
+
+    $req=$db->query("SELECT * FROM openingHours ORDER BY id_hours");
+    while ($aff=$req->fetch()){?>
+
+        <p><?php echo $aff['day']?><?php echo $aff['hours']?></p>
+
+      <?php } ?>
   </div>
 </section>
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"
