@@ -21,11 +21,12 @@
     $req=$db->query("SELECT * FROM openingHours ORDER BY id_hours");
     while ($aff=$req->fetch()){?>
 
-        <p><?php echo $aff['day']?><?php echo $aff['hours']?></p>
+        <p><b><?php echo $aff['day']?></b><?php echo $aff['hours']?></p>
 
       <?php } ?>
   </div>
 </section>
+
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"
   integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
   crossorigin="anonymous"></script>

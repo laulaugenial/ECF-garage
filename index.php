@@ -13,7 +13,8 @@
 </section>
 
 
-<!--PRESTATIONS-->
+<!-- PRESTATIONS -->
+
 <section class="articles">
   <h1>Prestations</h1>
   <div class="row">
@@ -37,59 +38,73 @@
 
 
 <!--- VEHICULES -->
+
 <section class="banner-vehicules">
   <h2>Découvrez tous nos véhicules d'occasion</h2>
   <a href="vehicules.php" class="btn-vehicules">Véhicules d'occasion</a>
 </section>
 
 
-<!---COMMENTS-->
+<!--- AVIS CLIENTS -->
+
+<?php
+        try {
+        $db = new PDO('pgsql:host=localhost;dbname=ECF;port=5432;options=\'--client_encoding=UTF8\'', 'laulaugenial', 'root', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, PDO::ATTR_EMULATE_PREPARES   => false]);
+
+        // Récupérer les commentaires publiés depuis la base de données
+        $query = "SELECT * FROM avis WHERE published = true";
+        $stmt = $db->query($query);
+        $commentaires = $stmt->fetchAll(PDO::FETCH_ASSOC); ?>
 
 <section class="comments">
   <h1>Ce que nos clients disent de nous</h1>
-  <div class="row">
-    <div class="comments-col">
-      <div>
-        <i class="fa fa-star"></i>
-        <i class="fa fa-star"></i>
-        <i class="fa fa-star"></i>
-        <i class="fa fa-star"></i>
-        <i class="fa fa-star-half"></i>
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ut asperiores quisquam 
-          distinctio voluptatibus sint obcaecati quidem pariatur atque totam? Sequi impedit 
-          nesciunt fuga illum, perspiciatis ullam quisquam iusto quia tempora?</p>
-        <h4>Nom 1</h4>
+  <?php foreach ($commentaires as $commentaire) : ?>
+    <div class="slide-container">
+      <div class="custom-slider fade">
+              <img class="slide-img">
+                <div class="slide-text">
+                    <h3><?= $commentaire['prenom'] . ' ' . $commentaire['nom']; ?></h3>
+                    <p><?= $commentaire['message']; ?></p>
+                    <div class="rating">
+                      <?php for ($i = 0; $i < $commentaire['note']; $i++) : ?>
+                        <i class="fa fa-star"></i> 
+                    <?php endfor; ?>
+                    </div>
+                </div> 
+          <?php endforeach; ?>
+
+        <?php } catch (PDOException $e) {
+          echo "Une erreur s'est produite lors de la récupération des avis : " . $e->getMessage();
+        }?>
+
       </div>
-    </div>
-    <div class="comments-col">
-      <div>
-        <i class="fa fa-star"></i>
-        <i class="fa fa-star"></i>
-        <i class="fa fa-star"></i>
-        <i class="fa fa-star"></i>
-        <i class="fa fa-star-half"></i>
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ut asperiores quisquam 
-          distinctio voluptatibus sint obcaecati quidem pariatur atque totam? Sequi impedit 
-          nesciunt fuga illum, perspiciatis ullam quisquam iusto quia tempora?</p>
-        <h4>Nom 2</h4>
-      </div>
+      <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+      <a class="next" onclick="plusSlides(1)">&#10095;</a>
     </div>
   </div>
-  <div>
-    <section class="comment-content">
+
+
+  <!-- LAISSER UN AVIS-->
+  <section class="comment-content">
       <div class="comment-box">
-        <h3> Donnez votre avis</h3>
-        <form class="form"  action="/functions/avis.php" method="POST">
-          <input type="text" name="nameComment" placeholder="Entrez votre prénom" required>
-          <input type="text" name="lastnameComment" placeholder="Entrez votre nom" required>
-          <input type="email" name="emailComment" placeholder="Entrez votre email" required>
-          <input type="text" name="gradeComment" placeholder="Notez votre commentaire de 1 à 5" required>
-          <textarea rows="5" name="comment"placeholder="Votre commentaire" required></textarea>
-          <button type="submit" name="btnAvis" class="hero-btn red-btn">Envoyer l'avis</button>
+      <h3> Donnez votre avis</h3>
+        <form class="form" method="post" action="../ECF-garage/functions/enregistrerAvis.php">
+              <input type="text" id="prenom" name="prenom" placeholder="Entrez votre prénom" required>
+              <input type="text" id="nom" name="nom" placeholder="Entrez votre nom"required>
+              <input type="email" id="email" name="email" placeholder="Entrez votre email" required>
+              <textarea id="message" name="message" rows="4" placeholder="Votre commentaire"required></textarea>
+
+              <label for="note">Note:</label>
+              <select id="note" name="note">
+                  <option value="1">1 étoile</option>
+                  <option value="2">2 étoiles</option>
+                  <option value="3">3 étoiles</option>
+                  <option value="4">4 étoiles</option>
+                  <option value="5">5 étoiles</option>
+              </select>
+              <br><br>
+          <button type="submit" class="hero-btn red-btn">Envoyer l'avis</button>
         </form>
-    </div>
-    </section>
-  </div>
 </section>
 
 <!---FOOTER-->

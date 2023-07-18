@@ -1,6 +1,9 @@
 <section class="header">
 <?php 
     require_once __DIR__.'/templates/header.php'; 
+    header("Set-Cookie: cross-site-cookie=whatever; SameSite=None; Secure");
+    $db = new PDO('pgsql:host=localhost;dbname=ECF;port=5432;options=\'--client_encoding=UTF8\'', 'laulaugenial', 'root', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, PDO::ATTR_EMULATE_PREPARES   => false]);
+
 ?> 
 </section>
 
@@ -17,7 +20,73 @@
       </p>
       <h1>Contactez-nous</h1>
       <p>Contactez-nous par téléphone au <b>01 02 03 04 05</b> ou en remplissant le formulaire ci-dessous, nous vous contacterons dans les plus brefs délais.</p>
+
+      <?php
+    // Vérifier si le formulaire a été soumis
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Récupérer les données du formulaire
+        $prenom = $_POST['prenom'];
+        $nom = $_POST['nom'];
+        $email = $_POST['email'];
+        $telephone = $_POST['telephone'];
+        $message = $_POST['message'];
+
+        // Valider les données
+        if (empty($prenom) || empty($nom) || empty($email) || empty($message)) {
+            echo "Veuillez remplir tous les champs obligatoires.";
+        } else {
+
+            try {
+              $db = new PDO('pgsql:host=localhost;dbname=ECF;port=5432;options=\'--client_encoding=UTF8\'', 'laulaugenial', 'root', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, PDO::ATTR_EMULATE_PREPARES   => false]);
+
+                // Préparer et exécuter la requête d'insertion des données
+                $query = "INSERT INTO contactForm (name, lastname, mail, phone, message) VALUES (?, ?, ?, ?, ?)";
+                $stmt = $db->prepare($query);
+                $stmt->execute([$prenom, $nom, $email, $telephone, $message]);
+
+                echo "Votre message a été envoyé avec succès !";
+            } catch (PDOException $e) {
+                echo "Une erreur s'est produite lors de l'envoi du message : " . $e->getMessage();
+            }
+        }
+    }
+    ?>
+    
+    <h1>Formulaire de contact</h1>
+    
+    <form class="form" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+        <input type="text" id="prenom" name="prenom" placeholder="Votre Prénom" required>
+        <input type="text" id="nom" name="nom" placeholder="Votre nom" required>
+        <input type="email" id="email" name="email" placeholder="Votre adresse mail"required>
+        <input type="text" id="telephone" name="telephone" placeholder="Votre téléphone">
+        <textarea id="message" name="message" rows="4" placeholder="Votre commentaire" required></textarea>
+        <button class="hero-btn red-btn" type="submit">Envoyer</button>
+    </form>
+
+
+
+                  <!--Modale
+      <section class="modal hidden">
+        <div class="flex">
+          <button class="btn-close">⨉</button>
+        </div>
+        <div>
+          <h3>Une question ? Nous sommes à votre écoute ! </h3>
+        </div>
+          <form class="form" action="../ECF/functions/carForm.php" method="POST">
+              <input type="text" name="name" placeholder="Votre prénom" required>
+              <input type="text" name="lastname" placeholder="Votre nom" required>
+              <input type="email" name="mail" placeholder="Votre email" required>
+              <input type="text" name="phone" placeholder="Votre téléphone" required>
+              <input type="text" name="message" placeholder="Votre message" required>
+          </form>
+          <button type="submit" class="btn" name="btn-carForm">Envoyer</button>
+      </section>
+      <div class="overlay hidden"></div>
+      <button class="btn btn-open">Contactez-nous !</button>
     </div>
+    -->
+
 </div>
 </section>
 

@@ -1,14 +1,3 @@
-// TOGGLE MENU
-var navLinks = document.getElementById("navLinks");
-
-function showMenu() {
-  navLinks.style.right = "0";
-}
-function hideMenu(){
-  navLinks.style.right = "-200px";
-}
-
-
 /////////////// CAROUSEL //////////////
 
 var slideIndex = 1;
@@ -37,8 +26,4 @@ function showSlides(n) {
   slides[slideIndex-1].style.display = "block";  
   dots[slideIndex-1].className += " active";
 }
-
-
-
-
 

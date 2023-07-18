@@ -1,6 +1,5 @@
 <?php
 session_start();
-include('../config/dbcon.php');
 ?>
 
 <!DOCTYPE html>
@@ -26,6 +25,7 @@ include('../config/dbcon.php');
       </div>
 </nav>
 
+<!-- AJOUTE COMPTE EMPLOYE-->
 
 <section class="modify">
   <div class="home-row">
@@ -42,52 +42,90 @@ include('../config/dbcon.php');
     </div>
     <div class="modify-col">
     <h1>Comptes existants</h1>
-      <table>
-        <th>Nom</th>
-        <th>Prénom
-        <th>Mail</th>
-        </th>
-        <?php
-        $req=$db->query("SELECT * FROM users");
-        while($aff=$req->fetch()){?>
+    <?php
+            try {
+              $db = new PDO('pgsql:host=localhost;dbname=ECF;port=5432;options=\'--client_encoding=UTF8\'', 'laulaugenial', 'root', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, PDO::ATTR_EMULATE_PREPARES   => false]);
 
-        <tr>
-          <td><?php echo $aff['name']?></td>
-          <td><?php echo $aff['lastname']?></td>
-          <td><?php echo $aff['email']?></td>
-          <td>
-            <a href="deleteEmployee.php?id=<?php echo $aff['id'] ?>">Supprimer</a>
-        </tr>
-        <?php } ?>
-      </table>
+              if (isset($_GET['delete_id'])) {
+                $deleteId = $_GET['delete_id'];
+    
+                $deleteQuery = "DELETE FROM users WHERE user_id = ?";
+                $stmt = $db->prepare($deleteQuery);
+                $stmt->execute([$deleteId]);
+              }
+              // Récupérer les informations des visiteurs depuis la base de données
+              $query = "SELECT * FROM users WHERE user_type != 'Admin'";
+              $stmt = $db->query($query);
+              $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+              // Afficher les informations des visiteurs dans un tableau
+              echo '<table>';
+              echo '<tr>
+              <th>Prénom</th>
+              <th>Nom</th>
+              <th>Email</th>
+              <th>Action</th>
+              </tr>';
+              foreach ($users as $user) {
+                  echo '<tr>';
+                  echo '<td>' . $user['name'] . '</td>';
+                  echo '<td>' . $user['lastname'] . '</td>';
+                  echo '<td>' . $user['email'] . '</td>';
+                  echo '<td><a href="?delete_id=' . $user['user_id'] . '">Supprimer</a></td>';
+                  echo '</tr>';
+              }
+              echo '</table>';
+              } catch (PDOException $e) {
+              echo "Une erreur s'est produite lors de la récupération des comptes : " . $e->getMessage();
+              }
+              ?>
     </div>
 </section>
+
+<!-- MODIFIE HORAIRES -->
 
 <section class="modify">
   <div class="home-row">
     <div class="modify-col">
       <h1>Modifier horaires d'ouverture</h1>
-        <form class="modify-form" action="../functions/addHours.php" method="POST">
-          <div class="deroulant">
-            <label for="day">Jour de la semaine</label>
-                <select name="day" id="day">
-                  <option value="">Sélectionnez un jour de semaine</option>
-                  <option value="Lundi">Lundi</option>
-                  <option value="Mardi">Mardi</option>
-                  <option value="Mercredi">Mercredi</option>
-                  <option value="Jeudi">Jeudi</option>
-                  <option value="Vendredi">Vendredi</option>
-                  <option value="Samedi">Samedi</option>
-                  <option value="Dimanche">Dimanche</option>
-                </select>
-          </div>
-          <label for="hours">Entrer les nouveaux horaires :</label>
-          <input type="text" name="hours" placeholder="Format 08:00 - 12:00, 14:00 18:00"required>
-          <button type="submit" name="addHours" class="add-btn red-btn">Ajouter</button>
-        </form>
-    </div>
-  </div>
+    <?php
+      try {
+        $db = new PDO('pgsql:host=localhost;dbname=ECF;port=5432;options=\'--client_encoding=UTF8\'', 'laulaugenial', 'root', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, PDO::ATTR_EMULATE_PREPARES   => false]);
 
+        // Vérifier si le formulaire a été soumis
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Mettre à jour les horaires dans la base de données
+            foreach ($_POST['horaires'] as $day => $hours) {
+                $query = "UPDATE openingHours SET hours = :hours WHERE day = :day";
+                $stmt = $db->prepare($query);
+                $stmt->execute(['hours' => $hours, 'day' => $day]);
+            }
+
+            echo "Les horaires ont été mis à jour avec succès !";
+        }
+
+        // Récupérer les horaires depuis la base de données
+        $query = "SELECT * FROM openingHours";
+        $stmt = $db->query($query);
+        $horaires = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        echo "Une erreur s'est produite lors de la récupération des horaires : " . $e->getMessage();
+    }
+    ?>
+
+    <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+        <?php
+        // Afficher les horaires dans un formulaire
+        foreach ($horaires as $hours) {
+            echo '<div class="modify-form">';
+            echo '<label for="' . $hours['day'] . '">' . $hours['day'] . '</label>';
+            echo '<input type="text" id="' . $hours['day'] . '" name="horaires[' . $hours['day'] . ']" value="' . $hours['hours'] . '"><br><br>';
+            echo '</div>';
+        }
+        ?>
+
+        <button type="submit" class="add-btn red-btn">Enregistrer</button>
+    </form>
 </section>
 </body>
 </html>

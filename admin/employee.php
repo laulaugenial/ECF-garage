@@ -29,31 +29,80 @@ include_once('../config/dbcon.php');
 <div class="container">
     <?php echo 'Bienvenue sur votre espace professionnel' . $name['name'] .$lastname['lastname'] ?>
 </div>
-<section class="modify">
-  <div class="row">
+
+<!-- AJOUTE VOITURE-->
+
+<?php
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
+        $carbrand = $_POST['carbrand'];
+        $year = $_POST['year'];
+        $fuel = $_POST['fuel'];
+        $km = $_POST['km'];
+        $price = $_POST['price'];
+        $infos = $_POST['infos'];
+
+        $targetDir = '../uploads/';
+
+        if (!file_exists($targetDir)) {
+            mkdir($targetDir, 0777, true); // Crée le dossier avec les permissions appropriées (777)
+            chmod($targetDir, 0777); // Donne les permissions d'écriture au dossier (777)
+        }
+
+
+        if (isset($_FILES['image']) || $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+            $image = $_FILES['image']['name'];
+            $targetFile = $targetDir . basename($image);
+
+             // Déplacer l'image téléchargée vers le répertoire des images
+             move_uploaded_file($_FILES['image']['tmp_name'], $targetFile);
+        }
+
+        try {
+            $db = new PDO('pgsql:host=localhost;dbname=ECF;port=5432;options=\'--client_encoding=UTF8\'', 'laulaugenial', 'root', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, PDO::ATTR_EMULATE_PREPARES   => false]);
+
+            // Insérer les données dans la base de données
+            $query = "INSERT INTO car (carbrand, year, fuel, km, price, infos, image) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            $stmt = $db->prepare($query);
+            $stmt->execute([$carbrand, $year, $fuel, $km, $price, $infos, basename($image)]);
+
+            echo "Le véhicule a été ajouté avec succès !";
+        } catch (PDOException $e) {
+            echo "Une erreur s'est produite lors de l'ajout du véhicule : " . $e->getMessage();
+        }
+    
+}
+?>
+
+<section class="modify">
+  <div class="row">    
     <div class="modify-col">
     <h1> Ajouter une voiture</h1>
-      <form class="modify-form" action="../functions/addCar.php" method="POST">
+      <form class="modify-form" action="<?php echo $_SERVER['PHP_SELF']; ?>" enctype="multipart/form-data" method="POST">
         <input type="text" name="carbrand" placeholder="Marque de la voiture" required>
         <input type="text" name="year" placeholder="Année mise en circulation">
         <input type="text" name="fuel" placeholder="Type d'essence">
         <input type="text" name="km" placeholder="Nombre de km">
         <input type="text" name="price" placeholder="Prix"required>
         <input type="text" name="infos" placeholder="Informations supplémentaires">
+        <input type="file" id="image" placeholder="Choisir une photo" name="image">
         <button type="submit" name="ajouter" class="add-btn red-btn">Ajouter</button>
       </form>
     </div>
   
+  
 
-    
+    <!-- CREE AVIS -->
+
     <div class="modify-col">
-      <h1>Espace commentaires</h1>
-        <form class="modify-form" action="../templates/footer.php" method="POST">
-            <input type="text" name="name" placeholder="Nom de l'auteur" required>
+      <h1>Ajouter un commentaire</h1>
+        <form class="modify-form" action="../commentApproved.php" method="POST">
+            <input type="text" name="firstname" placeholder="Prénom de l'auteur" required>
+            <input type="text" name="lastname" placeholder="Nom de l'auteur" required>
             <input type="text" name="comment" placeholder="Contenu du commentaire"required>
-            <label for="star">Nombre d'étoiles</label>
-            <select name="star" id="stars">
+            <label for="grade">Nombre d'étoiles</label>
+            <select name="grade" id="grade">
               <option value="">Sélectionnez</option>
               <option value="1">1 étoiles</option>
               <option value="2">2 étoiles</option>
@@ -66,30 +115,179 @@ include_once('../config/dbcon.php');
         </form>
     </div>
   </div>
+
+
+  <!-- RECUPERE AVIS CLIENTS-->
+
+  <section class="container-array">
+    <div class="modify-col">
+      <div class="array">
+        <h1>Avis clients</h1>
+            <?php
+            try {
+              $db = new PDO('pgsql:host=localhost;dbname=ECF;port=5432;options=\'--client_encoding=UTF8\'', 'laulaugenial', 'root', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, PDO::ATTR_EMULATE_PREPARES   => false]);
+
+              if (isset($_GET['delete_id'])) {
+                $deleteId = $_GET['delete_id'];
+    
+                $deleteQuery = "DELETE FROM avis WHERE id = ?";
+                $stmt = $db->prepare($deleteQuery);
+                $stmt->execute([$deleteId]);
+              }
+
+              // Si on clique sur Publier, la table est mise à jour
+              if (isset($_GET['publish_id'])) {
+                $publishId = $_GET['publish_id'];
+            
+                $publishQuery = "UPDATE avis SET published = TRUE WHERE id = ?";
+                $stmt = $db->prepare($publishQuery);
+                $stmt->execute([$publishId]);
+              }
+
+              // Récupérer les avis depuis la base de données
+              $query = "SELECT * FROM avis WHERE published = false";
+              $stmt = $db->query($query);
+              $commentaires = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+              // Afficher les avis dans un tableau
+              echo '<table>';
+              echo '<tr>
+              <th>Prénom</th>
+              <th>Nom</th>
+              <th>Email</th>
+              <th class="message">Message</th>
+              <th>Note</th>
+              <th>Action</th>
+              </tr>';
+              foreach ($commentaires as $commentaire) {
+                  echo '<tr>';
+                  echo '<td>' . $commentaire['prenom'] . '</td>';
+                  echo '<td>' . $commentaire['nom'] . '</td>';
+                  echo '<td>' . $commentaire['email'] . '</td>';
+                  echo '<td>' . $commentaire['message'] . '</td>';
+                  echo '<td>' . $commentaire['note'] . '</td>';
+                  echo '<td><a href="?publish_id=' . $commentaire['id'] . '">Publier</a>
+                  <a href="?delete_id=' . $commentaire['id'] . '">Supprimer</a></td>';
+                  echo '</tr>';
+                }
+              echo '</table>';
+              } catch (PDOException $e) {
+              echo "Une erreur s'est produite lors de la récupération des avis : " . $e->getMessage();
+              }
+              ?>
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- RECUPERE FORMULAIRES RENSEIGNEMENTS VOITURES-->
+
+  <section class="container-array">
+    <div class="modify-col">
+      <div class="array">
+        <h1>Renseignement voiture</h1>
+        <?php
+            try {
+              $db = new PDO('pgsql:host=localhost;dbname=ECF;port=5432;options=\'--client_encoding=UTF8\'', 'laulaugenial', 'root', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, PDO::ATTR_EMULATE_PREPARES   => false]);
+
+              if (isset($_GET['delete_id'])) {
+                $deleteId = $_GET['delete_id'];
+    
+                $deleteQuery = "DELETE FROM carForm WHERE id = ?";
+                $stmt = $db->prepare($deleteQuery);
+                $stmt->execute([$deleteId]);
+              }
+
+              // Récupérer les demandes renseignement depuis la base de données
+              $query = "SELECT * FROM carForm";
+              $stmt = $db->query($query);
+              $visiteurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+              // Afficher les informations dans un tableau
+              echo '<table>';
+              echo '<tr>
+              <th>Prénom</th>
+              <th>Nom</th>
+              <th>Email</th>
+              <th>Téléphone</th>
+              <th>Voiture</th>
+              <th>Message</th>
+              <th>Action</th>
+              </tr>';
+              foreach ($visiteurs as $visiteur) {
+                  echo '<tr>';
+                  echo '<td>' . $visiteur['name'] . '</td>';
+                  echo '<td>' . $visiteur['lastname'] . '</td>';
+                  echo '<td>' . $visiteur['mail'] . '</td>';
+                  echo '<td>' . $visiteur['phone'] . '</td>';
+                  echo '<td>' . $visiteur['car'] . '</td>';
+                  echo '<td>' . $visiteur['message'] . '</td>';
+                  echo '<td><a href="?delete_id=' . $visiteur['id'] . '">Supprimer</a></td>';
+                  echo '</tr>';
+              }
+              echo '</table>';
+              } catch (PDOException $e) {
+              echo "Une erreur s'est produite lors de la récupération du formulaire : " . $e->getMessage();
+              }
+              ?>
+      </div>
+    </div>
+  </div>
 </section>
 
-<div class="container">
-  <div class="array">
-    <h1>Formulaires</h1>
-    <br>
-    <table>
-      <tr>
-        <th>ID</th>
-        <th>Nom et prénom</th>
-        <th>Mail</th>
-        <th>Télephone</th>
-        <th>Objet</th>
-        <th class="message">Message</th>
-      </tr>
-      <tr>
-        <td>ergerg</td>
-        <td>ergerg</td>
-        <td>ergerg</td>
-        <td>ergerg</td>
-        <td>ergerg</td>
-        <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error ipsum assumenda, quae rerum temporibus est commodi, sapiente officiis sed asperiores corporis saepe nisi rem sit dolorum ea?</td>
-    </table>
-  </div>
+
+<!-- RECUPERE FORMULAIRES PRISE CONTACT-->
+
+<section class="container-array">
+    <div class="modify-col">
+      <div class="array">
+        <h1>Prise de contact</h1>
+            <?php
+            try {
+              $db = new PDO('pgsql:host=localhost;dbname=ECF;port=5432;options=\'--client_encoding=UTF8\'', 'laulaugenial', 'root', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, PDO::ATTR_EMULATE_PREPARES   => false]);
+
+              if (isset($_GET['delete_id'])) {
+                $deleteId = $_GET['delete_id'];
+    
+                $deleteQuery = "DELETE FROM contactForm WHERE id = ?";
+                $stmt = $db->prepare($deleteQuery);
+                $stmt->execute([$deleteId]);
+              }
+
+              // Récupérer les informations des visiteurs depuis la base de données
+              $query = "SELECT * FROM contactForm";
+              $stmt = $db->query($query);
+              $visiteurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+              // Afficher les informations des visiteurs dans un tableau
+              echo '<table>';
+              echo '<tr>
+              <th>Prénom</th>
+              <th>Nom</th>
+              <th>Email</th>
+              <th>Téléphone</th>
+              <th class="message">Message</th>
+              <th>Action</th>
+              </tr>';
+              foreach ($visiteurs as $visiteur) {
+                  echo '<tr>';
+                  echo '<td>' . $visiteur['name'] . '</td>';
+                  echo '<td>' . $visiteur['lastname'] . '</td>';
+                  echo '<td>' . $visiteur['mail'] . '</td>';
+                  echo '<td>' . $visiteur['phone'] . '</td>';
+                  echo '<td>' . $visiteur['message'] . '</td>';
+                  echo '<td><a href="?delete_id=' . $visiteur['id'] . '">Supprimer</a></td>';
+                  echo '</tr>';
+              }
+              echo '</table>';
+              } catch (PDOException $e) {
+              echo "Une erreur s'est produite lors de la récupération des visiteurs : " . $e->getMessage();
+              }
+              ?>
+      
+      </div>
+    </div>
 </section>
 
 </body>
