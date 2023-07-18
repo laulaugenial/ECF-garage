@@ -22,21 +22,6 @@ include('../config/dbcon.php'); ?>
 </nav>
 
 <section class="container">
-
-<?php
-        if(isset($_SESSION['message']))
-        {
-            ?>
-            <div class="alert">
-                <strong>Hey!</strong> <?= $_SESSION['message']; ?>
-                <button type="button" aria-label="close"></button>
-            </div>
-            <?php
-            unset($_SESSION['message']);
-        }
-        ?>
-
-
     <h1>Connectez-vous à votre espace professionnel</h1>
     <div class="container-content">
         <form action="../functions/authcode.php" method="POST">

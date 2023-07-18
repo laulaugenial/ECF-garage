@@ -1,5 +1,7 @@
 <?php
 session_start();
+$name = $_SESSION['name'];
+$lastname = $_SESSION['lastname'];
 ?>
 
 <!DOCTYPE html>
@@ -24,6 +26,10 @@ session_start();
       <div class="nav-links" id="navLinks">
       </div>
 </nav>
+
+<div class="container">
+    <h1>Bienvenue sur votre espace professionnel <?php echo $name .' ' . $lastname; ?> !</h1>
+</div>
 
 <!-- AJOUTE COMPTE EMPLOYE-->
 

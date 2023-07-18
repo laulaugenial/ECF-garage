@@ -88,7 +88,7 @@ $(document).ready(function(){
               <?php $form=$db->query("SELECT carbrand FROM car");
               while($link=$form->fetch()) { ?>
                     
-                    <option value="chosenCar"><?php echo $link['carbrand'] ?></option>
+                    <option value="<?php echo $link['carbrand'] ?>"><?php echo $link['carbrand'] ?></option>
                     <?php } ?>
               </select>
 

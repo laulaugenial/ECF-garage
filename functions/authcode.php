@@ -6,17 +6,25 @@ $stmt = $db->prepare("SELECT * FROM users WHERE email = ?");
 $stmt->execute([$_POST['email']]);
 $user = $stmt->fetch();
 
-if ($user && ($_POST['password'] == $user['password']))
+if ($user && (password_verify($_POST['password'], $user['password'])))
 {
-    if (($user['user_type'] == 'Admin'))
-    {
+    if (($user['user_type'] === 'Admin'))
+    {   
+        session_start();
+        $_SESSION['name'] = $user['name'];
+        $_SESSION['lastname'] = $user['lastname'];
         header('Location: ../admin/home.php');
+        exit();
     }
     else
     {
         if($user['user_type'] == 'Employee')
-        {
+        {   
+            session_start();
+            $_SESSION['name'] = $user['name'];
+            $_SESSION['lastname'] = $user['lastname'];
             header('Location: ../admin/employee.php');
+            exit();
         }
         else 
         {

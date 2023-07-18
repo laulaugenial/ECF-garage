@@ -1,6 +1,8 @@
 <?php
 session_start();
 include_once('../config/dbcon.php');
+$name = $_SESSION['name'];
+$lastname = $_SESSION['lastname'];
 ?>
 
 <!DOCTYPE html>
@@ -27,7 +29,7 @@ include_once('../config/dbcon.php');
 </nav>
 
 <div class="container">
-    <?php echo 'Bienvenue sur votre espace professionnel' . $name['name'] .$lastname['lastname'] ?>
+    <h1>Bienvenue sur votre espace professionnel <?php echo $name .' ' . $lastname; ?> !</h1>
 </div>
 
 <!-- AJOUTE VOITURE-->
