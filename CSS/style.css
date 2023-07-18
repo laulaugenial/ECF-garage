@@ -585,7 +585,7 @@ nav .fa {
 }
 .modify-form label{
     margin: 10px 10px;
-    text-align: left;
+    justify-items: left;    
 }
 .modify-form input{
     width: 100%;

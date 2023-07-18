@@ -78,25 +78,30 @@ $(document).ready(function(){
 
 <section class="sales-articles">
   <div class="car-filter">
-    <h2>Une question sur une voiture en particulier ?</h2>
-    <form class="modify-form" action="../ECF-garage/functions/carForm.php" method="POST">
-      
-          <label for="chosen">Choisir la voiture</label>
-            <select id="chosen" name="chosen">
-            <?php $form=$db->query("SELECT carbrand FROM car");
-            while($link=$form->fetch()) { ?>
-                  <option value="chosenCar"><?php echo $link['carbrand'] ?></option>
-                  <?php } ?>
-            </select>
+    <div class="modify-col">
+      <h2>Une question sur une voiture en particulier ?</h2>
+      <form class="modify-form" action="../ECF-garage/functions/carForm.php" method="POST">
+        
+            <label for="chosen">Choisir la voiture</label>
+              <select id="chosen" name="chosen">
+                    <option value="choose">-- Sélectionner parmi la liste --</option>
+              <?php $form=$db->query("SELECT carbrand FROM car");
+              while($link=$form->fetch()) { ?>
+                    
+                    <option value="chosenCar"><?php echo $link['carbrand'] ?></option>
+                    <?php } ?>
+              </select>
 
-          <input type="text" name="name" placeholder="Prénom" required>
-          <input type="text" name="lastname" placeholder="Nom"required>
-          <input type="email" name="email" placeholder="Email"required>
-          <input type="text" name="phone" placeholder="Numéro de téléphone"required>
-          <input type="text" name="message" placeholder="message"required>
-          <br>
-          <button type="submit" name="ajouter" class="add-btn red-btn">Envoyer</button>
-    </form>
+            <input type="text" name="name" placeholder="Prénom" required>
+            <input type="text" name="lastname" placeholder="Nom"required>
+            <input type="email" name="email" placeholder="Email"required>
+            <input type="text" name="phone" placeholder="Numéro de téléphone"required>
+            <input type="text" name="message" placeholder="Message"required>
+            <br>
+            <button type="submit" name="ajouter" class="add-btn red-btn">Envoyer</button>
+      </form>
+    </div>
+  </div>
 
 </section>
 <script src="../ECF/JS/carousel.js"></script>
