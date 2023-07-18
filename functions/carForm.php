@@ -4,12 +4,12 @@ try {
 
     // Récupérer les données du formulaire des renseignements voiture
     
-    $prenom = $_POST['name'];
-    $nom = $_POST['lastname'];
-    $email = $_POST['email'];
-    $phone = $_POST['phone'];
+    $prenom = htmlspecialchars($_POST['name']);
+    $nom = htmlspecialchars($_POST['lastname']);
+    $email = htmlspecialchars($_POST['email']);
+    $phone = htmlspecialchars($_POST['phone']);
     $car = $_POST['chosen'];
-    $message = $_POST['message'];
+    $message = htmlspecialchars($_POST['message']);
     
 
     // Insérer le commentaire dans la base de données

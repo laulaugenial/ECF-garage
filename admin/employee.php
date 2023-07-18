@@ -45,36 +45,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $price = $_POST['price'];
         $infos = $_POST['infos'];
 
-        $targetDir = '../uploads/';
+        if (isset($_POST['ajouter'])) {
+ 
+          $filename = $_FILES["image"]["name"];
+          $tempname = $_FILES["image"]["tmp_name"];
+          $folder = "uploads/" . $filename;
+       
+          $db = new PDO('pgsql:host=localhost;dbname=ECF;port=5432;options=\'--client_encoding=UTF8\'', 'laulaugenial', 'root', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, PDO::ATTR_EMULATE_PREPARES   => false]);
 
-        if (!file_exists($targetDir)) {
-            mkdir($targetDir, 0777, true); // Crée le dossier avec les permissions appropriées (777)
-            chmod($targetDir, 0777); // Donne les permissions d'écriture au dossier (777)
-        }
-
-
-        if (isset($_FILES['image']) || $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-            $image = $_FILES['image']['name'];
-            $targetFile = $targetDir . basename($image);
-
-             // Déplacer l'image téléchargée vers le répertoire des images
-             move_uploaded_file($_FILES['image']['tmp_name'], $targetFile);
-        }
-
-        try {
-            $db = new PDO('pgsql:host=localhost;dbname=ECF;port=5432;options=\'--client_encoding=UTF8\'', 'laulaugenial', 'root', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, PDO::ATTR_EMULATE_PREPARES   => false]);
-
+        
             // Insérer les données dans la base de données
             $query = "INSERT INTO car (carbrand, year, fuel, km, price, infos, image) VALUES (?, ?, ?, ?, ?, ?, ?)";
             $stmt = $db->prepare($query);
-            $stmt->execute([$carbrand, $year, $fuel, $km, $price, $infos, basename($image)]);
+            $stmt->execute([$carbrand, $year, $fuel, $km, $price, $infos, $filename]);
+          
+            // Now let's move the uploaded image into the folder: image
+            if (move_uploaded_file($tempname, $folder)) {
+            echo "<h3>  Image téléchargée avec succès !</h3>";
+            } else {
+            echo "<h3>  Failed to upload image!</h3>";
+            }
 
-            echo "Le véhicule a été ajouté avec succès !";
-        } catch (PDOException $e) {
-            echo "Une erreur s'est produite lors de l'ajout du véhicule : " . $e->getMessage();
-        }
-    
-}
+            echo "Le véhicule a été ajouté avec succès !"; 
+          }
+      }
 ?>
 
 <section class="modify">

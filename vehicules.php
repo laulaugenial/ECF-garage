@@ -69,6 +69,10 @@ $(document).ready(function(){
         echo '<p class="kilometrage">' . $aff['km'] . 'km</p>';
         echo '<h4 classe="prix">' . $aff['price'] . '€</h4>';
         echo '<p>' . $aff['infos'] . '</p>';
+        echo '<div class="additional-info">';
+        echo '<p>' . $aff['infos'] . '</p>';
+        echo '</div>';
+        echo '<button class="show-more-btn">Afficher plus</button>';
         echo '</div>';
       }
       
@@ -104,7 +108,6 @@ $(document).ready(function(){
   </div>
 
 </section>
-<script src="../ECF/JS/carousel.js"></script>
 
 <!---FOOTER-->
 

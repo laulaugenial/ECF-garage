@@ -48,63 +48,62 @@
 <!--- AVIS CLIENTS -->
 
 <?php
-        try {
-        $db = new PDO('pgsql:host=localhost;dbname=ECF;port=5432;options=\'--client_encoding=UTF8\'', 'laulaugenial', 'root', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, PDO::ATTR_EMULATE_PREPARES   => false]);
+$db = new PDO('pgsql:host=localhost;dbname=ECF;port=5432;options=\'--client_encoding=UTF8\'', 'laulaugenial', 'root', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, PDO::ATTR_EMULATE_PREPARES   => false]);
 
-        // Récupérer les commentaires publiés depuis la base de données
-        $query = "SELECT * FROM avis WHERE published = true";
-        $stmt = $db->query($query);
-        $commentaires = $stmt->fetchAll(PDO::FETCH_ASSOC); ?>
+// Récupérer les commentaires publiés depuis la base de données
+$query = "SELECT * FROM avis WHERE published = true";
+$stmt = $db->query($query);
+$commentaires = $stmt->fetchAll(PDO::FETCH_ASSOC); ?>
+
 
 <section class="comments">
   <h1>Ce que nos clients disent de nous</h1>
-  <?php foreach ($commentaires as $commentaire) : ?>
-    <div class="slide-container">
-      <div class="custom-slider fade">
-              <img class="slide-img">
-                <div class="slide-text">
-                    <h3><?= $commentaire['prenom'] . ' ' . $commentaire['nom']; ?></h3>
-                    <p><?= $commentaire['message']; ?></p>
-                    <div class="rating">
-                      <?php for ($i = 0; $i < $commentaire['note']; $i++) : ?>
-                        <i class="fa fa-star"></i> 
-                    <?php endfor; ?>
-                    </div>
-                </div> 
-          <?php endforeach; ?>
-
-        <?php } catch (PDOException $e) {
-          echo "Une erreur s'est produite lors de la récupération des avis : " . $e->getMessage();
-        }?>
-
+  <div class="row-avis">
+    <?php foreach ($commentaires as $commentaire) : ?>
+      <div class="comments-col">
+        <div>
+          <div class="rating">
+              <?php for ($i = 0; $i < $commentaire['note']; $i++) : ?>
+                <i class="fa fa-star"></i>
+              <?php endfor; ?>
+            <p><?= $commentaire['message']; ?></p>
+              <h4><?= $commentaire['prenom'] . ' ' . $commentaire['nom']; ?></h4>
+          </div>
+        </div>
       </div>
-      <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-      <a class="next" onclick="plusSlides(1)">&#10095;</a>
-    </div>
+    <?php endforeach; ?>
   </div>
-
-
-  <!-- LAISSER UN AVIS-->
-  <section class="comment-content">
-      <div class="comment-box">
-      <h3> Donnez votre avis</h3>
-        <form class="form" method="post" action="../ECF-garage/functions/enregistrerAvis.php">
-              <input type="text" id="prenom" name="prenom" placeholder="Entrez votre prénom" required>
-              <input type="text" id="nom" name="nom" placeholder="Entrez votre nom"required>
-              <input type="email" id="email" name="email" placeholder="Entrez votre email" required>
-              <textarea id="message" name="message" rows="4" placeholder="Votre commentaire"required></textarea>
-
-              <label for="note">Note:</label>
-              <select id="note" name="note">
-                  <option value="1">1 étoile</option>
-                  <option value="2">2 étoiles</option>
-                  <option value="3">3 étoiles</option>
-                  <option value="4">4 étoiles</option>
-                  <option value="5">5 étoiles</option>
-              </select>
-              <br><br>
-          <button type="submit" class="hero-btn red-btn">Envoyer l'avis</button>
-        </form>
+    <!-- Trigger/Open The Modal -->
+    <button id="myBtn" class="comment-btn">Laisser un avis</button>
+    
+      <!-- The Modal -->
+      <div id="myModal" class="modal">
+    
+        <!-- Modal content -->
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <section class="comment-content">
+            <div class="comment-box">
+            <h3> Donnez votre avis</h3>
+              <form class="form" method="post" action="../ECF-garage/functions/enregistrerAvis.php">
+                <input type="text" id="prenom" name="prenom" placeholder="Entrez votre prénom" required>
+                <input type="text" id="nom" name="nom" placeholder="Entrez votre nom"required>
+                <input type="email" id="email" name="email" placeholder="Entrez votre email" required>
+                <textarea id="message" name="message" rows="4" placeholder="Votre commentaire"required></textarea>
+                <label for="note">Note:</label>
+                <select id="note" name="note">
+                    <option value="1">1 étoile</option>
+                    <option value="2">2 étoiles</option>
+                    <option value="3">3 étoiles</option>
+                    <option value="4">4 étoiles</option>
+                    <option value="5">5 étoiles</option>
+                </select>
+                <br><br>
+                <button type="submit" class="hero-btn red-btn">Envoyer l'avis</button>
+              </form>
+          </section>
+        </div>
+      </div>
 </section>
 
 <!---FOOTER-->

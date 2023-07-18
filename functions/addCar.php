@@ -2,12 +2,12 @@
 
 if(isset($_POST['ajouter'])) {
     if(!empty($_POST['carbrand']) AND !empty($_POST['price'])) {
-        $carbrand = $_POST['carbrand'];
-        $year = $_POST['year'];
-        $fuel = $_POST['fuel'];
-        $km = $_POST['km'];
-        $price = $_POST['price'];
-        $infos = $_POST['infos'];
+        $carbrand = htmlspecialchars($_POST['carbrand']);
+        $year = htmlspecialchars($_POST['year']);
+        $fuel = htmlspecialchars($_POST['fuel']);
+        $km = htmlspecialchars($_POST['km']);
+        $price = htmlspecialchars($_POST['price']);
+        $infos = htmlspecialchars($_POST['infos']);
 
         if (isset($_FILES['image']) || $_FILES['image']['error'] === 0) {
             $image = $_FILES['image']['name'];
