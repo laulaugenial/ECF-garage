@@ -21,6 +21,7 @@
         vos questions concernant l'entretien de votre véhicule. Nous vous conseillerons sur les meilleures 
         pratiques, les intervalles de maintenance recommandés et les mesures préventives pour éviter 
         d'éventuelles pannes coûteuses.</p>
+        <a href="contact.php" class="hero-btn red-btn">Nous contacter</a>
     </div>
   </div>
 </section>

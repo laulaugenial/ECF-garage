@@ -167,9 +167,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                   echo '</tr>';
                 }
               echo '</table>';
+
+
+              if (isset($_GET['supprimerAvis'])) {
+                $delete = $_GET['supprimerAvis'];
+    
+                $deleteAvis = "DELETE FROM avis WHERE id = ?";
+                $base = $db->prepare($deleteAvis);
+                $base->execute([$delete]);
+              }
+              // Affiche tableau des avis publiés
+              
+              // Récupérer les avis publiés depuis la base de données
+              $res = "SELECT * FROM avis WHERE published = true";
+              $recup = $db->query($res);
+              $resumes = $recup->fetchAll(PDO::FETCH_ASSOC);
+
+              // Afficher les informations des visiteurs dans un tableau
+              echo '<br>';
+              echo '<h1>Avis publiés</h1>';
+              echo '<table>';
+              echo '<tr>
+              <th>Nom</th>
+              <th>Note</th>
+              <th>Message</th>
+              <th>Action</th>
+              </tr>';
+              foreach ($resumes as $resume) {
+                  echo '<tr>';
+                  echo '<td>' . $resume['nom'] . '</td>';
+                  echo '<td>' . $resume['note'] . '</td>';
+                  echo '<td>' . $resume['message'] . '</td>';
+                  echo '<td><a href="?supprimerAvis=' . $resume['id'] . '">Supprimer</a></td>';
+                  echo '</tr>';
+              }
+              echo '</table>';
+
               } catch (PDOException $e) {
               echo "Une erreur s'est produite lors de la récupération des avis : " . $e->getMessage();
               }
+
+              
               ?>
       </div>
     </div>

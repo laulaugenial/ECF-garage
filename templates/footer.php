@@ -1,6 +1,6 @@
 <section class="footer">
-  <div>
-    <h4>Nous trouver</h4>
+  <div class="nav-footer">
+    <h4>Où nous trouver</h4>
     <p>15 rue des marronniers<br>31500 Toulouse</p>
     <h4>Téléphone</h4>
     <p>01 02 03 04 05</p>
@@ -13,7 +13,7 @@
     <a href="contact.php"><h4>Contact</h4></a>
     <a href="admin/login.php"><h4>Espace pro</h4></a>
   </div>
-  <div>
+  <div class="nav-footer">
     <h4>Horaires d'ouverture</h4>
     <?php
     $db = new PDO('pgsql:host=localhost;dbname=ECF;port=5432;options=\'--client_encoding=UTF8\'', 'laulaugenial', 'root', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, PDO::ATTR_EMULATE_PREPARES   => false]);

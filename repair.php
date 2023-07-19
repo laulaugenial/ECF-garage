@@ -23,6 +23,7 @@
         de carrosserie, vous bénéficierez d'un travail minutieux et méticuleux, axé sur les détails. 
         Nous nous efforçons de rétablir non seulement l'apparence esthétique de votre véhicule, mais 
         également son intégrité structurelle, garantissant ainsi votre sécurité et votre tranquillité d'esprit.</p>
+        <a href="contact.php" class="hero-btn red-btn">Nous contacter</a>
     </div>
   </div>
   <div class="row">
@@ -38,6 +39,7 @@
         pour garantir des réparations durables et fiables. Notre objectif est de restaurer la 
         performance de votre moteur, d'améliorer son efficacité énergétique et de prolonger sa durée 
         de vie, tout en vous offrant une conduite agréable et sans souci.</p>
+        <a href="contact.php" class="hero-btn red-btn">Nous contacter</a>
     </div>
     <div class="carrosserie-col">
       <img src="assets/engine.png">

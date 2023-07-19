@@ -59,7 +59,7 @@
         <input type="text" id="nom" name="nom" placeholder="Votre nom" required>
         <input type="email" id="email" name="email" placeholder="Votre adresse mail"required>
         <input type="text" id="telephone" name="telephone" placeholder="Votre téléphone">
-        <textarea id="message" name="message" rows="4" placeholder="Votre commentaire" required></textarea>
+        <textarea id="message" name="message" rows="4" placeholder="Votre message" required></textarea>
         <button class="hero-btn red-btn" type="submit">Envoyer</button>
     </form>
 
