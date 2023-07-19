@@ -2,7 +2,7 @@
 <?php 
     require_once __DIR__.'/templates/header.php'; 
     header("Set-Cookie: cross-site-cookie=whatever; SameSite=None; Secure");
-    $db = new PDO('pgsql:host=localhost;dbname=ECF;port=5432;options=\'--client_encoding=UTF8\'', 'laulaugenial', 'root', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, PDO::ATTR_EMULATE_PREPARES   => false]);
+    $db = new PDO('pgsql:host=postgresql-ecf-garage.alwaysdata.net;dbname=ecf-garage_ecf;port=5432;options=\'--client_encoding=UTF8\'', 'ecf-garage_laulaugenial', 'iKG*!ZhGtg6gah*', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, PDO::ATTR_EMULATE_PREPARES   => false]);
 
 ?> 
 </section>
@@ -37,7 +37,7 @@
         } else {
 
             try {
-              $db = new PDO('pgsql:host=localhost;dbname=ECF;port=5432;options=\'--client_encoding=UTF8\'', 'laulaugenial', 'root', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, PDO::ATTR_EMULATE_PREPARES   => false]);
+              $db = new PDO('pgsql:host=postgresql-ecf-garage.alwaysdata.net;dbname=ecf-garage_ecf;port=5432;options=\'--client_encoding=UTF8\'', 'ecf-garage_laulaugenial', 'iKG*!ZhGtg6gah*', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, PDO::ATTR_EMULATE_PREPARES   => false]);
 
                 // Préparer et exécuter la requête d'insertion des données
                 $query = "INSERT INTO contactForm (name, lastname, mail, phone, message) VALUES (?, ?, ?, ?, ?)";
@@ -62,31 +62,6 @@
         <textarea id="message" name="message" rows="4" placeholder="Votre message" required></textarea>
         <button class="hero-btn red-btn" type="submit">Envoyer</button>
     </form>
-
-
-
-                  <!--Modale
-      <section class="modal hidden">
-        <div class="flex">
-          <button class="btn-close">⨉</button>
-        </div>
-        <div>
-          <h3>Une question ? Nous sommes à votre écoute ! </h3>
-        </div>
-          <form class="form" action="../ECF/functions/carForm.php" method="POST">
-              <input type="text" name="name" placeholder="Votre prénom" required>
-              <input type="text" name="lastname" placeholder="Votre nom" required>
-              <input type="email" name="mail" placeholder="Votre email" required>
-              <input type="text" name="phone" placeholder="Votre téléphone" required>
-              <input type="text" name="message" placeholder="Votre message" required>
-          </form>
-          <button type="submit" class="btn" name="btn-carForm">Envoyer</button>
-      </section>
-      <div class="overlay hidden"></div>
-      <button class="btn btn-open">Contactez-nous !</button>
-    </div>
-    -->
-
 </div>
 </section>
 
