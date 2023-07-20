@@ -7,7 +7,8 @@
 
 <div class="text-box">
   <h1>Bienvenue dans votre Garage V. Parrot</h1>
-  <p>Implantés dans la ville de Toulouse depuis plus de 15ans, nous vous garantissons un service rapide et sur mesure.<br>Confiez votre véhicule à de vrais passionés en toute confiance. </p>
+  <p>Implantés dans la ville de Toulouse depuis plus de 15 ans, nous vous garantissons un service rapide et sur mesure.<br>
+  Confiez votre véhicule à de vrais passionnés en toute confiance. </p>
   <a href="contact.php" class="hero-btn">Contactez-nous !</a>
 </div>
 </section>
@@ -21,17 +22,17 @@
     <div class="article-col">
       <img src="assets/repair.png" alt="Reparation carrosserie">
         <h3>Carrosserie</h3>
-        <p>Changement d'éléments, camouflage d'égratinures</p>
+        <p>Nous rétablissons l'apparence esthétique de votre véhicule et son intégrité structurelle</p>
     </div>
     <div class="article-col">
       <img src="assets/control.png" alt="Reparation mécanique">
         <h3>Mécanique</h3>
-        <p>Remplacement de pièces défectueuses</p>
+        <p>Expertise approfondie dans le diagnostic et la réparation de tous types de problèmes moteur</p>
     </div>
     <div class="article-col">
       <img src="assets/clean.png" alt="Entretien voiture">
         <h3>Entretien</h3>
-        <p>Nettoyage, vente de produits agréés... <br>Trouvez votre bonheur chez nous !</p>
+        <p>Entretien et conseils d'entretien personnalisés, adaptés aux besoins spécifiques de votre voiture</p>
     </div>
   </div>
 </section>
