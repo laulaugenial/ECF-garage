@@ -1,8 +1,40 @@
 <?php
 session_start();
-include_once('../config/dbcon.php');
 $name = $_SESSION['name'];
 $lastname = $_SESSION['lastname'];
+
+
+// Vérifie si l'utilisateur est authentifié
+function isUserAuthenticated() {
+  return isset($_SESSION['user_id']);
+}
+
+// Redirige l'utilisateur vers la page de login s'il n'est pas authentifié
+function redirectToLogin() {
+  header('Location: login.php');
+  exit();
+}
+
+// Authentifie l'utilisateur (à appeler lorsqu'il se connecte)
+function authenticateUser($userId) {
+  $_SESSION['user_id'] = $userId;
+}
+
+// Déconnecte l'utilisateur (à appeler lorsqu'il se déconnecte)
+
+function logoutUser() {
+  session_unset();
+  session_destroy();
+  redirectToLogin();
+}
+if (isset($_POST['logout'])) {
+  logoutUser();
+}
+// Vérifie si l'utilisateur est authentifié, sinon le redirige vers la page de login
+if (!isUserAuthenticated()) {
+    redirectToLogin();
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -24,6 +56,9 @@ $lastname = $_SESSION['lastname'];
   crossorigin="anonymous"></script>
 <nav class="header">
       <a href="../index.php"><img src="../assets/logo.png"></a>
+      <form class="logout" method="post">
+        <input class="hero-btn red-btn" type="submit" name="logout" value="Déconnexion">
+    </form>
       <div class="nav-links" id="navLinks">
       </div>
 </nav>
@@ -31,6 +66,7 @@ $lastname = $_SESSION['lastname'];
 <div class="container">
     <h1>Bienvenue sur votre espace professionnel <?php echo $name .' ' . $lastname; ?> !</h1>
 </div>
+
 
 <!-- AJOUTE VOITURE-->
 
@@ -49,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
  
           $filename = $_FILES["image"]["name"];
           $tempname = $_FILES["image"]["tmp_name"];
-          $folder = "uploads/" . $filename;
+          $folder = "../assets/uploads/" . $filename;
        
           $db = new PDO('pgsql:host=postgresql-ecf-garage.alwaysdata.net;dbname=ecf-garage_ecf;port=5432;options=\'--client_encoding=UTF8\'', 'ecf-garage_laulaugenial', 'iKG*!ZhGtg6gah*', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, PDO::ATTR_EMULATE_PREPARES   => false]);
 
@@ -59,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $db->prepare($query);
             $stmt->execute([$carbrand, $year, $fuel, $km, $price, $infos, $filename]);
           
-            // Now let's move the uploaded image into the folder: image
+            // Move the uploaded image into the folder: image
             if (move_uploaded_file($tempname, $folder)) {
             echo "<h3>  Image téléchargée avec succès !</h3>";
             } else {
@@ -67,9 +103,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
             echo "Le véhicule a été ajouté avec succès !"; 
-          }
+        }
       }
 ?>
+
 
 <section class="modify">
   <div class="row">    
@@ -86,11 +123,52 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <button type="submit" name="ajouter" class="add-btn red-btn">Ajouter</button>
       </form>
     </div>
-  
+
+    <?php
+    try {
+              $db = new PDO('pgsql:host=postgresql-ecf-garage.alwaysdata.net;dbname=ecf-garage_ecf;port=5432;options=\'--client_encoding=UTF8\'', 'ecf-garage_laulaugenial', 'iKG*!ZhGtg6gah*', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, PDO::ATTR_EMULATE_PREPARES   => false]);
+
+              if (isset($_GET['supprimerVoiture'])) {
+                $suppr = $_GET['supprimerVoiture'];
+    
+                $supprCar = "DELETE FROM car WHERE car_id = ?";
+                $carDB = $db->prepare($supprCar);
+                $carDB->execute([$suppr]);
+              }
+
+    // Récupérer les avis publiés depuis la base de données
+              $carID = "SELECT * FROM car";
+              $assbl = $db->query($carID);
+              $carRecs = $assbl->fetchAll(PDO::FETCH_ASSOC);
+
+              // Afficher les informations des visiteurs dans un tableau
+              echo '<div class="modify-col">';
+              echo '<h1>Anonces voitures publiées</h1>';
+              echo '<table>';
+              echo '<tr>
+              <th>Marque</th>
+              <th>Prix</th>
+              <th>Action</th>
+              </tr>';
+              foreach ($carRecs as $carRec) {
+                  echo '<tr>';
+                  echo '<td data-label="Marque">' . $carRec['carbrand'] . '</td>';
+                  echo '<td data-label="Prix">' . $carRec['price'] . '</td>';
+                  echo '<td data-label="Action"><a href="?supprimerVoiture=' . $carRec['car_id'] . '">Supprimer</a></td>';
+                  echo '</tr>';
+              }
+              echo '</table>';
+              echo '</div>';
+          
+        } catch (PDOException $e) {
+          echo "Une erreur s'est produite lors de la récupération des avis : " . $e->getMessage();
+        }
+?>
+</section>
   
 
     <!-- CREE AVIS -->
-
+<section class="modify">
     <div class="modify-col">
       <h1>Ajouter un commentaire</h1>
         <form class="modify-form" action="../commentApproved.php" method="POST">
@@ -111,14 +189,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </form>
     </div>
   </div>
-
+</section>
 
   <!-- RECUPERE AVIS CLIENTS-->
 
-  <section class="container-array">
+<section class="container-array">
     <div class="modify-col">
       <div class="array">
-        <h1>Avis clients</h1>
+        <h1>Nouveaux Avis clients</h1>
             <?php
             try {
               $db = new PDO('pgsql:host=postgresql-ecf-garage.alwaysdata.net;dbname=ecf-garage_ecf;port=5432;options=\'--client_encoding=UTF8\'', 'ecf-garage_laulaugenial', 'iKG*!ZhGtg6gah*', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, PDO::ATTR_EMULATE_PREPARES   => false]);
@@ -157,16 +235,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               </tr>';
               foreach ($commentaires as $commentaire) {
                   echo '<tr>';
-                  echo '<td>' . $commentaire['prenom'] . '</td>';
-                  echo '<td>' . $commentaire['nom'] . '</td>';
-                  echo '<td>' . $commentaire['email'] . '</td>';
-                  echo '<td>' . $commentaire['message'] . '</td>';
-                  echo '<td>' . $commentaire['note'] . '</td>';
-                  echo '<td><a href="?publish_id=' . $commentaire['id'] . '">Publier</a>
+                  echo '<td data-label="Prénom">' . $commentaire['prenom'] . '</td>';
+                  echo '<td data-label="Nom">' . $commentaire['nom'] . '</td>';
+                  echo '<td data-label="Email">' . $commentaire['email'] . '</td>';
+                  echo '<td data-label="Message">' . $commentaire['message'] . '</td>';
+                  echo '<td data-label="Note">' . $commentaire['note'] . '</td>';
+                  echo '<td data-label="Action"><a href="?publish_id=' . $commentaire['id'] . '">Publier</a>
                   <a href="?delete_id=' . $commentaire['id'] . '">Supprimer</a></td>';
                   echo '</tr>';
                 }
               echo '</table>';
+              echo '<br>';
 
 
               if (isset($_GET['supprimerAvis'])) {
@@ -176,6 +255,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $base = $db->prepare($deleteAvis);
                 $base->execute([$delete]);
               }
+              ?>
+        </div>
+      </div>
+</section>
+
+<section class="container-array">
+    <div class="modify-col">
+      <div class="array">
+        <?php
               // Affiche tableau des avis publiés
               
               // Récupérer les avis publiés depuis la base de données
@@ -195,10 +283,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               </tr>';
               foreach ($resumes as $resume) {
                   echo '<tr>';
-                  echo '<td>' . $resume['nom'] . '</td>';
-                  echo '<td>' . $resume['note'] . '</td>';
-                  echo '<td>' . $resume['message'] . '</td>';
-                  echo '<td><a href="?supprimerAvis=' . $resume['id'] . '">Supprimer</a></td>';
+                  echo '<td data-label="Nom">' . $resume['nom'] . '</td>';
+                  echo '<td data-label="Note">' . $resume['note'] . '</td>';
+                  echo '<td data-label="Message">' . $resume['message'] . '</td>';
+                  echo '<td data-label="Action"><a href="?supprimerAvis=' . $resume['id'] . '">Supprimer</a></td>';
                   echo '</tr>';
               }
               echo '</table>';
@@ -206,18 +294,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               } catch (PDOException $e) {
               echo "Une erreur s'est produite lors de la récupération des avis : " . $e->getMessage();
               }
-
-              
               ?>
       </div>
     </div>
-  </section>
+</section>
 
 
 
   <!-- RECUPERE FORMULAIRES RENSEIGNEMENTS VOITURES-->
 
-  <section class="container-array">
+<section class="container-array">
     <div class="modify-col">
       <div class="array">
         <h1>Renseignement voiture</h1>
@@ -251,13 +337,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               </tr>';
               foreach ($visiteurs as $visiteur) {
                   echo '<tr>';
-                  echo '<td>' . $visiteur['name'] . '</td>';
-                  echo '<td>' . $visiteur['lastname'] . '</td>';
-                  echo '<td>' . $visiteur['mail'] . '</td>';
-                  echo '<td>' . $visiteur['phone'] . '</td>';
-                  echo '<td>' . $visiteur['car'] . '</td>';
-                  echo '<td>' . $visiteur['message'] . '</td>';
-                  echo '<td><a href="?delete_id=' . $visiteur['id'] . '">Supprimer</a></td>';
+                  echo '<td data-label="Prénom">' . $visiteur['name'] . '</td>';
+                  echo '<td data-label="Nom">' . $visiteur['lastname'] . '</td>';
+                  echo '<td data-label="Email">' . $visiteur['mail'] . '</td>';
+                  echo '<td data-label="Téléphone">' . $visiteur['phone'] . '</td>';
+                  echo '<td data-label="Voiture">' . $visiteur['car'] . '</td>';
+                  echo '<td data-label="Message">' . $visiteur['message'] . '</td>';
+                  echo '<td data-label="Action"><a href="?delete_id=' . $visiteur['id'] . '">Supprimer</a></td>';
                   echo '</tr>';
               }
               echo '</table>';
@@ -306,12 +392,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               </tr>';
               foreach ($visiteurs as $visiteur) {
                   echo '<tr>';
-                  echo '<td>' . $visiteur['name'] . '</td>';
-                  echo '<td>' . $visiteur['lastname'] . '</td>';
-                  echo '<td>' . $visiteur['mail'] . '</td>';
-                  echo '<td>' . $visiteur['phone'] . '</td>';
-                  echo '<td>' . $visiteur['message'] . '</td>';
-                  echo '<td><a href="?delete_id=' . $visiteur['id'] . '">Supprimer</a></td>';
+                  echo '<td data-label="Prénom">' . $visiteur['name'] . '</td>';
+                  echo '<td data-label="Nom"' . $visiteur['lastname'] . '</td>';
+                  echo '<td data-label="Email">' . $visiteur['mail'] . '</td>';
+                  echo '<td data-label="Téléphone">' . $visiteur['phone'] . '</td>';
+                  echo '<td data-label="Message">' . $visiteur['message'] . '</td>';
+                  echo '<td data-label="Action"><a href="?delete_id=' . $visiteur['id'] . '">Supprimer</a></td>';
                   echo '</tr>';
               }
               echo '</table>';

@@ -2,6 +2,39 @@
 session_start();
 $name = $_SESSION['name'];
 $lastname = $_SESSION['lastname'];
+
+
+// Vérifie si l'utilisateur est authentifié
+function isUserAuthenticated() {
+  return isset($_SESSION['user_id']);
+}
+
+// Redirige l'utilisateur vers la page de login s'il n'est pas authentifié
+function redirectToLogin() {
+  header('Location: login.php');
+  exit();
+}
+
+// Authentifie l'utilisateur (à appeler lorsqu'il se connecte)
+function authenticateUser($userId) {
+  $_SESSION['user_id'] = $userId;
+}
+
+// Déconnecte l'utilisateur (à appeler lorsqu'il se déconnecte)
+
+function logoutUser() {
+  session_unset();
+  session_destroy();
+  redirectToLogin();
+}
+if (isset($_POST['logout'])) {
+  logoutUser();
+}
+// Vérifie si l'utilisateur est authentifié, sinon le redirige vers la page de login
+if (!isUserAuthenticated()) {
+    redirectToLogin();
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -23,12 +56,21 @@ $lastname = $_SESSION['lastname'];
   crossorigin="anonymous"></script>
 <nav class="header">
       <a href="../index.php"><img src="../assets/logo.png"></a>
+      <form class="logout" method="post">
+        <input class="hero-btn red-btn" type="submit" name="logout" value="Déconnexion">
+    </form>
       <div class="nav-links" id="navLinks">
       </div>
 </nav>
 
 <div class="container">
     <h1>Bienvenue sur votre espace professionnel <?php echo $name .' ' . $lastname; ?> !</h1>
+</div>
+    <!-- Bouton de déconnexion -->
+<div class="container">
+    <form method="post">
+        <input type="submit" name="logout" value="Déconnexion">
+    </form>
 </div>
 
 <!-- AJOUTE COMPTE EMPLOYE-->
@@ -74,10 +116,10 @@ $lastname = $_SESSION['lastname'];
               </tr>';
               foreach ($users as $user) {
                   echo '<tr>';
-                  echo '<td>' . $user['name'] . '</td>';
-                  echo '<td>' . $user['lastname'] . '</td>';
-                  echo '<td>' . $user['email'] . '</td>';
-                  echo '<td><a href="?delete_id=' . $user['user_id'] . '">Supprimer</a></td>';
+                  echo '<td data-label="Prénom">' . $user['name'] . '</td>';
+                  echo '<td data-label="Nom">' . $user['lastname'] . '</td>';
+                  echo '<td data-label="Email">' . $user['email'] . '</td>';
+                  echo '<td data-label="Action"><a href="?delete_id=' . $user['user_id'] . '">Supprimer</a></td>';
                   echo '</tr>';
               }
               echo '</table>';

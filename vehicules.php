@@ -1,7 +1,7 @@
 <section class="header">
-  <?php 
-    require_once __DIR__.'/templates/header.php';
-
+<?php 
+    require_once __DIR__.'/templates/header.php'; 
+    include __DIR__.'/config/dbcon.php';
   ?> 
 
 </section>
@@ -39,29 +39,29 @@ $(document).ready(function(){
 
 
 <section class="sales-articles">
-<h1>Nos véhicules d'occasion à la vente</h1>
-<div class="car-filter">
-  <h2>Affinez votre recherche</h2>
-  <form id="filtres-form" class="filtres">
-      <label for="marque">Marque:</label>
-      <input type="text" id="marque" name="marque">
-      <label for="prix-min">Prix minimum :</label>
-      <input type="number" id="prix-min" name="prix-min">
-      <label for="prix-max">Prix maximum :</label>
-      <input type="number" id="prix-max" name="prix-max">
-  </form>
-</div>
+  <h1>Nos véhicules d'occasion à la vente</h1>
+    <div class="car-filter">
+      <h2>Affinez votre recherche</h2>
+      <form id="filtres-form" class="filtres">
+          <label for="marque">Marque:</label>
+          <input type="text" id="marque" name="marque">
+          <label for="prix-min">Prix minimum :</label>
+          <input type="number" id="prix-min" name="prix-min">
+          <label for="prix-max">Prix maximum :</label>
+          <input type="number" id="prix-max" name="prix-max">
+      </form>
+    </div>
 
   <div class="row-sales">
 
     <?php
-    $db = new PDO('pgsql:host=postgresql-ecf-garage.alwaysdata.net;dbname=ecf-garage_ecf;port=5432;options=\'--client_encoding=UTF8\'', 'ecf-garage_laulaugenial', 'iKG*!ZhGtgbgah*', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, PDO::ATTR_EMULATE_PREPARES   => false]);
+    $db = new PDO('pgsql:host=postgresql-ecf-garage.alwaysdata.net;dbname=ecf-garage_ecf;port=5432;options=\'--client_encoding=UTF8\'', 'ecf-garage_laulaugenial', 'iKG*!ZhGtg6gah*', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, PDO::ATTR_EMULATE_PREPARES   => false]);
     $req=$db->query("SELECT * FROM car ORDER BY car_id DESC");
 
       while($aff=$req->fetch()) {
 
         echo '<div id="carte" class="sales-col">';
-          $imagePath = '../ECF-garage/uploads/' . $aff['image'];
+          $imagePath = '/assets/uploads/' . $aff['image'];
         echo '<img src="' . $imagePath . '" alt="Image de la voiture à vendre">';
         echo '<h3 class="brand">' . $aff['carbrand'] . '</h3>';
         echo '<p>Année :' . $aff['year'] . '</p>';
@@ -69,10 +69,6 @@ $(document).ready(function(){
         echo '<p class="kilometrage">' . $aff['km'] . 'km</p>';
         echo '<h4 classe="prix">' . $aff['price'] . '€</h4>';
         echo '<p>' . $aff['infos'] . '</p>';
-        echo '<div class="additional-info">';
-        echo '<p>' . $aff['infos'] . '</p>';
-        echo '</div>';
-        echo '<button class="show-more-btn">Afficher plus</button>';
         echo '</div>';
       }
       
@@ -84,7 +80,7 @@ $(document).ready(function(){
   <div class="car-filter">
     <div class="modify-col">
       <h2>Une question sur une voiture en particulier ?</h2>
-      <form class="modify-form" action="../ECF-garage/functions/carForm.php" method="POST">
+      <form class="modify-form" action="/functions/carForm.php" method="POST">
             
             <label for="chosen">Choisir la voiture</label>
               <select id="chosen" name="chosen">

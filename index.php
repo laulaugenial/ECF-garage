@@ -2,7 +2,7 @@
 <section class="header-index">
   <?php 
     require_once __DIR__.'/templates/header.php'; 
-    include_once('/config/dbcon.php');
+    include __DIR__.'/config/dbcon.php';
   ?> 
 
 <div class="text-box">
@@ -48,7 +48,7 @@
 <!--- AVIS CLIENTS -->
 
 <?php
-    $db = new PDO('pgsql:host=postgresql-ecf-garage.alwaysdata.net;dbname=ecf-garage_ecf;port=5432;options=\'--client_encoding=UTF8\'', 'ecf-garage_laulaugenial', 'iKG*!ZhGtgbgah*', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, PDO::ATTR_EMULATE_PREPARES   => false]);
+    $db = new PDO('pgsql:host=postgresql-ecf-garage.alwaysdata.net;dbname=ecf-garage_ecf;port=5432;options=\'--client_encoding=UTF8\'', 'ecf-garage_laulaugenial', 'iKG*!ZhGtg6gah*', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, PDO::ATTR_EMULATE_PREPARES   => false]);
 
 // Récupérer les commentaires publiés depuis la base de données
 $query = "SELECT * FROM avis WHERE published = true";
@@ -85,7 +85,7 @@ $commentaires = $stmt->fetchAll(PDO::FETCH_ASSOC); ?>
           <section class="comment-content">
             <div class="comment-box">
             <h3> Donnez votre avis</h3>
-              <form class="form" method="post" action="../ECF-garage/functions/enregistrerAvis.php">
+              <form class="form" method="post" action="/functions/enregistrerAvis.php">
                 <input type="text" id="prenom" name="prenom" placeholder="Entrez votre prénom" required>
                 <input type="text" id="nom" name="nom" placeholder="Entrez votre nom"required>
                 <input type="email" id="email" name="email" placeholder="Entrez votre email" required>

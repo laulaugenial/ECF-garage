@@ -13,6 +13,7 @@ if ($user && (password_verify($_POST['password'], $user['password'])))
         session_start();
         $_SESSION['name'] = $user['name'];
         $_SESSION['lastname'] = $user['lastname'];
+        $_SESSION['user_id'] = $user['user_id'];
         header('Location: ../admin/home.php');
         exit();
     }
@@ -23,6 +24,7 @@ if ($user && (password_verify($_POST['password'], $user['password'])))
             session_start();
             $_SESSION['name'] = $user['name'];
             $_SESSION['lastname'] = $user['lastname'];
+            $_SESSION['user_id'] = $user['user_id'];
             header('Location: ../admin/employee.php');
             exit();
         }

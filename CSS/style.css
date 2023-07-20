@@ -19,6 +19,9 @@
     width: 100%;
     background-color: #2e2e2e;
 }
+.logout {
+    padding-left: 5em;
+}
 nav{
     display: flex;
     padding: 2% 6%;
@@ -32,6 +35,7 @@ nav img {
     flex: 1;
     text-align: right;
 }
+
 .nav-links ul li {
     list-style: none;
     display: inline-block;
@@ -236,8 +240,9 @@ nav .fa {
     .row-sales {
         flex-direction: column;
         width: 70%;
-        align-items: center;
+        justify-content: center;
         flex-wrap: nowrap;
+        padding-left: 12%;
     }
     .sales-col {
         justify-content: center;
@@ -293,16 +298,22 @@ nav .fa {
         flex-direction: column;
         margin-bottom: 50px;
     }
+    .car-filter {
+        flex-direction: column;
+    }
 }
 @media(max-width: 430px){
     .banner-vehicules{
         text-align: center;
     }
 }
-@media(max-width: 700px){
-    .car-filter {
-        flex-direction: column;
-    }
+@media(max-width: 770px){
+.filtres label {
+    display: flex;
+    flex-direction: column;
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
 }
 
 
@@ -567,6 +578,11 @@ nav .fa {
     color:#ff8c00;
     border: 1px solid #ff8c00;
 }
+@media (max-width: 700px) {
+    .container h1 {
+        font-size:larger;
+    }
+}
 
 
 
@@ -752,4 +768,49 @@ cursor: pointer;
 
 .additional-info.show {
     display: block;
+}
+
+
+/*Tableau responsive*/
+
+@media (max-width: 700px){
+
+    table {
+        width: 100%;
+    }
+
+    table, tbody, tr, th, td{
+    display: block;
+    }
+
+    thead {
+        display: none;
+    }
+    
+    td {
+        padding: 8px;
+        position: relative;
+        background: #fff;
+        margin-top: -1;
+    }
+    td:nth-child(odd) {
+        background-color:#f9f8f8;
+    }
+    
+    td::before {
+        padding: 10px;
+        content: attr(data-label);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 130px;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        font-weight: bold;
+    }
+
+    tr {
+        margin-bottom: 1rem;
+    }
 }
