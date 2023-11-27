@@ -8,33 +8,35 @@
 
 <script>
 $(document).ready(function(){
-  $("#marque").on("keyup", function() {
-    var value = $(this).val().toLowerCase();
+  $("#marque, #prix-min, #prix-max").on("input", function() {
+    var marqueFilter = $("#marque").val().toLowerCase();
+    var minPrice = parseFloat($("#prix-min").val()) || 0;
+    var maxPrice = parseFloat($("#prix-max").val()) || Number.POSITIVE_INFINITY;
 
-    $(".sales-col").filter(function() {
-      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    $(".sales-col").each(function() {
+      var isVisible = true;
+
+      // Filtrer par marque
+      if (marqueFilter.length > 0) {
+        var marqueText = $(this).text().toLowerCase();
+        isVisible = marqueText.indexOf(marqueFilter) > -1;
+      }
+
+      // Filtrer par prix
+      if (isVisible) {
+        var prixText = $(this).find(".prix").text().trim();
+        var prix = parseFloat(prixText.replace(/[^\d.]/g, ''));
+
+        var isPriceValid = !isNaN(prix) && isFinite(prix);
+
+        isVisible = isPriceValid && minPrice <= prix && prix <= maxPrice;
+      }
+
+      $(this).toggle(isVisible);
     });
   });
-
-  $("#prix-min").on("keyup", function() {
-  var minPrice = parseFloat($(this).val());
-
-  $(".sales-col").filter(function() {
-    return parseFloat($(this).find(".prix").text()) >= minPrice;
-  }).show();
-
-  $(".sales-col").filter(function() {
-    return parseFloat($(this).find(".prix").text()) < minPrice;
-  }).hide();
 });
-//  $("#prix-min").on("keyup", function() {
-//    var minPrice = parseFloat($(this).val());
 
-  //  $(".sales-col").filter(function() {
-    //  $(this).toggle(parseFloat($(this).find(".prix").text()) >= minPrice);
- // });
-//});
-});
 </script>
 
 
@@ -46,9 +48,9 @@ $(document).ready(function(){
           <label for="marque">Marque:</label>
           <input type="text" id="marque" name="marque">
           <label for="prix-min">Prix minimum :</label>
-          <input type="number" id="prix-min" name="prix-min">
+          <input type="text" id="prix-min" name="prix-min">
           <label for="prix-max">Prix maximum :</label>
-          <input type="number" id="prix-max" name="prix-max">
+          <input type="text" id="prix-max" name="prix-max">
       </form>
     </div>
 
@@ -58,19 +60,19 @@ $(document).ready(function(){
     $db = new PDO('pgsql:host=postgresql-ecf-garage.alwaysdata.net;dbname=ecf-garage_ecf;port=5432;options=\'--client_encoding=UTF8\'', 'ecf-garage_laulaugenial', 'iKG*!ZhGtg6gah*', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, PDO::ATTR_EMULATE_PREPARES   => false]);
     $req=$db->query("SELECT * FROM car ORDER BY car_id DESC");
 
-      while($aff=$req->fetch()) {
+    while($aff=$req->fetch()) {
 
-        echo '<div id="carte" class="sales-col">';
-          $imagePath = '/assets/uploads/' . $aff['image'];
-        echo '<img src="' . $imagePath . '" alt="Image de la voiture à vendre">';
-        echo '<h3 class="brand">' . $aff['carbrand'] . '</h3>';
-        echo '<p>Année :' . $aff['year'] . '</p>';
-        echo '<p>' . $aff['fuel'] . '</p>';
-        echo '<p class="kilometrage">' . $aff['km'] . 'km</p>';
-        echo '<h4 classe="prix">' . $aff['price'] . '€</h4>';
-        echo '<p>' . $aff['infos'] . '</p>';
-        echo '</div>';
-      }
+      echo '<div class="sales-col">';
+      $imagePath = '/assets/uploads/' . $aff['image'];
+      echo '<img src="' . $imagePath . '" alt="Image de la voiture à vendre">';
+      echo '<h3 class="brand">' . $aff['carbrand'] . '</h3>';
+      echo '<p>Année :' . $aff['year'] . '</p>';
+      echo '<p>' . $aff['fuel'] . '</p>';
+      echo '<p class="kilometrage">' . $aff['km'] . 'km</p>';
+      echo '<h4 class="prix">' . $aff['price'] . '€</h4>';
+      echo '<p>' . $aff['infos'] . '</p>';
+      echo '</div>';
+  }
       
       ?>
   </div>
