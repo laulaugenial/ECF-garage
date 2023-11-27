@@ -71,40 +71,7 @@ if (!isUserAuthenticated()) {
 <!-- AJOUTE VOITURE-->
 
 <?php
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    
-        $carbrand = $_POST['carbrand'];
-        $year = $_POST['year'];
-        $fuel = $_POST['fuel'];
-        $km = $_POST['km'];
-        $price = $_POST['price'];
-        $infos = $_POST['infos'];
-
-        if (isset($_POST['ajouter'])) {
- 
-          $filename = $_FILES["image"]["name"];
-          $tempname = $_FILES["image"]["tmp_name"];
-          $folder = "../assets/uploads/" . $filename;
-       
-          $db = new PDO('pgsql:host=postgresql-ecf-garage.alwaysdata.net;dbname=ecf-garage_ecf;port=5432;options=\'--client_encoding=UTF8\'', 'ecf-garage_laulaugenial', 'iKG*!ZhGtg6gah*', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, PDO::ATTR_EMULATE_PREPARES   => false]);
-
-        
-            // Insérer les données dans la base de données
-            $query = "INSERT INTO car (carbrand, year, fuel, km, price, infos, image) VALUES (?, ?, ?, ?, ?, ?, ?)";
-            $stmt = $db->prepare($query);
-            $stmt->execute([$carbrand, $year, $fuel, $km, $price, $infos, $filename]);
-          
-            // Move the uploaded image into the folder: image
-            if (move_uploaded_file($tempname, $folder)) {
-            echo "<h3>  Image téléchargée avec succès !</h3>";
-            } else {
-            echo "<h3>  Failed to upload image!</h3>";
-            }
-
-            echo "Le véhicule a été ajouté avec succès !"; 
-        }
-      }
+include __DIR__.'/functions/addCar.php';
 ?>
 
 
@@ -136,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $carDB->execute([$suppr]);
               }
 
-    // Récupérer les avis publiés depuis la base de données
+              // Récupérer les avis publiés depuis la base de données
               $carID = "SELECT * FROM car";
               $assbl = $db->query($carID);
               $carRecs = $assbl->fetchAll(PDO::FETCH_ASSOC);
@@ -160,8 +127,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               echo '</table>';
               echo '</div>';
           
-        } catch (PDOException $e) {
-          echo "Une erreur s'est produite lors de la récupération des avis : " . $e->getMessage();
+        } catch (PDOException $e) {    
+          $errorMessage = "Erreur PDO : ";
+          error_log($errorMessage, 3, '../ECF-garage/logs/error.log');
+          echo "Une erreur s'est produite lors de la récupération des avis";
         }
 ?>
 </section>
@@ -201,23 +170,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             try {
               $db = new PDO('pgsql:host=postgresql-ecf-garage.alwaysdata.net;dbname=ecf-garage_ecf;port=5432;options=\'--client_encoding=UTF8\'', 'ecf-garage_laulaugenial', 'iKG*!ZhGtg6gah*', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, PDO::ATTR_EMULATE_PREPARES   => false]);
 
-              if (isset($_GET['delete_id'])) {
-                $deleteId = $_GET['delete_id'];
-    
-                $deleteQuery = "DELETE FROM avis WHERE id = ?";
-                $stmt = $db->prepare($deleteQuery);
-                $stmt->execute([$deleteId]);
-              }
-
-              // Si on clique sur Publier, la table est mise à jour
-              if (isset($_GET['publish_id'])) {
-                $publishId = $_GET['publish_id'];
-            
-                $publishQuery = "UPDATE avis SET published = TRUE WHERE id = ?";
-                $stmt = $db->prepare($publishQuery);
-                $stmt->execute([$publishId]);
-              }
-
               // Récupérer les avis depuis la base de données
               $query = "SELECT * FROM avis WHERE published = false";
               $stmt = $db->query($query);
@@ -247,13 +199,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               echo '</table>';
               echo '<br>';
 
+              // Si on clique sur Publier, la table est mise à jour
+              if (isset($_GET['publish_id'])) {
+                $publishId = $_GET['publish_id'];
+            
+                $publishQuery = "UPDATE avis SET published = TRUE WHERE id = ?";
+                $stmt = $db->prepare($publishQuery);
+                $stmt->execute([$publishId]);
+              }
 
-              if (isset($_GET['supprimerAvis'])) {
-                $delete = $_GET['supprimerAvis'];
+              // Supprime avis reçus de la BDD
+              if (isset($_GET['delete_id'])) {
+                $deleteId = $_GET['delete_id'];
     
-                $deleteAvis = "DELETE FROM avis WHERE id = ?";
-                $base = $db->prepare($deleteAvis);
-                $base->execute([$delete]);
+                $deleteQuery = "DELETE FROM avis WHERE id = ?";
+                $stmt = $db->prepare($deleteQuery);
+                $stmt->execute([$deleteId]);
               }
               ?>
         </div>
@@ -264,7 +225,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="modify-col">
       <div class="array">
         <?php
-              // Affiche tableau des avis publiés
+              // TABLEAU AVIS PUBLIES
               
               // Récupérer les avis publiés depuis la base de données
               $res = "SELECT * FROM avis WHERE published = true";
@@ -292,7 +253,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               echo '</table>';
 
               } catch (PDOException $e) {
-              echo "Une erreur s'est produite lors de la récupération des avis : " . $e->getMessage();
+              echo "Une erreur s'est produite lors de la récupération des avis : ";
+              }
+
+              // Supprime Avis publiés
+              if (isset($_GET['supprimerAvis'])) {
+                $delete = $_GET['supprimerAvis'];
+    
+                $deleteAvis = "DELETE FROM avis WHERE id = ?";
+                $base = $db->prepare($deleteAvis);
+                $base->execute([$delete]);
               }
               ?>
       </div>
@@ -348,7 +318,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               }
               echo '</table>';
               } catch (PDOException $e) {
-              echo "Une erreur s'est produite lors de la récupération du formulaire : " . $e->getMessage();
+              echo "Une erreur s'est produite lors de la récupération du formulaire : ";
               }
               ?>
       </div>
@@ -402,7 +372,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               }
               echo '</table>';
               } catch (PDOException $e) {
-              echo "Une erreur s'est produite lors de la récupération des visiteurs : " . $e->getMessage();
+              echo "Une erreur s'est produite lors de la récupération des visiteurs : ";
               }
               ?>
       
